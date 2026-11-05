@@ -1,0 +1,25 @@
+{
+  "name": "tafsir-roman-urdu",
+  "version": "1.0.0",
+  "description": "The world's first complete, 100% accurate, standardized Roman Urdu transliteration of Tafsir Ibn Kathir across all 114 Surahs.",
+  "main": "data/roman_urdu/1.json",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mzaid007/tafsir-roman-urdu.git"
+  },
+  "keywords": [
+    "quran",
+    "tafsir",
+    "ibn-kathir",
+    "roman-urdu",
+    "urdu",
+    "islamic-studies",
+    "dataset"
+  ],
+  "author": "Tafsir-Roman-Urdu Contributors",
+  "license": "CC-BY-SA-4.0",
+  "bugs": {
+    "url": "https://github.com/mzaid007/tafsir-roman-urdu/issues"
+  },
+  "homepage": "https://github.com/mzaid007/tafsir-roman-urdu#readme"
+}
