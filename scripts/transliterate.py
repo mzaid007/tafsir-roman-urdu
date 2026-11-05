@@ -91,58 +91,65 @@ def chunk_text(text: str, max_chars: int = 2500) -> List[str]:
 
 
 def call_gemini(urdu_chunk: str, model: str = DEFAULT_MODEL, max_retries: int = 2) -> str:
-    """Calls Gemini API with automatic exponential backoff and fast model pool fallbacks."""
+    """Calls Gemini API with automatic exponential backoff, fast model pool fallbacks, and outer recovery rounds."""
     if not GEMINI_API_KEY:
         raise ValueError("GEMINI_API_KEY is not set. Please set it in .env or environment.")
 
     models_to_try = [model] + [m for m in FALLBACK_MODELS if m != model]
 
-    for current_model in models_to_try:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{current_model}:generateContent?key={GEMINI_API_KEY}"
-        payload = {
-            "contents": [
-                {
-                    "parts": [
-                        {
-                            "text": f"{SYSTEM_PROMPT}\n\nUrdu Source Text to Transliterate:\n{urdu_chunk}"
-                        }
-                    ]
-                }
-            ],
-            "generationConfig": {
-                "temperature": 0.1,
-                "topP": 0.95,
-            }
-        }
+    for pool_round in range(5):
+        if pool_round > 0:
+            wait_time = 10.0 * pool_round
+            print(f"\nAll models temporarily busy/rate-limited. Waiting {wait_time:.0f}s before pool retry (attempt {pool_round + 1}/5)...")
+            time.sleep(wait_time)
 
-        for attempt in range(max_retries):
-            try:
-                resp = requests.post(url, json=payload, timeout=45)
-                if resp.status_code == 200:
-                    data = resp.json()
-                    candidates = data.get("candidates", [])
-                    if candidates and "content" in candidates[0]:
-                        parts = candidates[0]["content"].get("parts", [])
-                        if parts:
-                            res_text = parts[0].get("text", "").strip()
-                            # Strip markdown block quotes if present
-                            if res_text.startswith("```"):
-                                res_text = re.sub(r"^```[a-zA-Z]*\n?", "", res_text)
-                                res_text = re.sub(r"\n?```$", "", res_text).strip()
-                            return res_text
-                elif resp.status_code in (429, 503):
-                    # Rate limit or high demand - short backoff then switch model
-                    sleep_time = 2.0 * (attempt + 1)
-                    print(f"[{current_model}] Status {resp.status_code}. Backing off {sleep_time}s...")
+        for current_model in models_to_try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{current_model}:generateContent?key={GEMINI_API_KEY}"
+            payload = {
+                "contents": [
+                    {
+                        "parts": [
+                            {
+                                "text": f"{SYSTEM_PROMPT}\n\nUrdu Source Text to Transliterate:\n{urdu_chunk}"
+                            }
+                        ]
+                    }
+                ],
+                "generationConfig": {
+                    "temperature": 0.1,
+                    "topP": 0.95,
+                }
+            }
+
+            for attempt in range(max_retries):
+                try:
+                    resp = requests.post(url, json=payload, timeout=45)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        candidates = data.get("candidates", [])
+                        if candidates and "content" in candidates[0]:
+                            parts = candidates[0]["content"].get("parts", [])
+                            if parts:
+                                res_text = parts[0].get("text", "").strip()
+                                # Strip markdown block quotes if present
+                                if res_text.startswith("```"):
+                                    res_text = re.sub(r"^```[a-zA-Z]*\n?", "", res_text)
+                                    res_text = re.sub(r"\n?```$", "", res_text).strip()
+                                return res_text
+                    elif resp.status_code in (429, 503):
+                        sleep_time = 2.0 * (attempt + 1)
+                        print(f"[{current_model}] Status {resp.status_code}. Backing off {sleep_time}s...")
+                        time.sleep(sleep_time)
+                    else:
+                        print(f"[{current_model}] Error HTTP {resp.status_code}: {resp.text[:100]}")
+                        break  # Try next model
+                except requests.exceptions.RequestException as e:
+                    sleep_time = 2.0
+                    print(f"Network issue on {current_model}: {e}. Trying next model...")
                     time.sleep(sleep_time)
-                else:
-                    print(f"[{current_model}] Error HTTP {resp.status_code}: {resp.text[:100]}")
-                    break  # Try next model
-            except requests.exceptions.RequestException as e:
-                sleep_time = 2.0
-                print(f"Network error on {current_model}: {e}. Trying next model...")
-                time.sleep(sleep_time)
-                break
+                    break
+
+    raise RuntimeError(f"All models failed to transliterate chunk of length {len(urdu_chunk)}")
 
     raise RuntimeError(f"All models failed to transliterate chunk of length {len(urdu_chunk)}")
 
@@ -239,6 +246,9 @@ def transliterate_surah(surah: int, data_ur_dir: str = "data/ur", data_ru_dir: s
             "ayah": ayah_num,
             "text": ru_text
         })
+
+    # Sort sequentially by numerical ayah
+    ru_ayahs.sort(key=lambda x: int(x.get("ayah", 0)))
 
     # Save to destination atomically
     ru_path.parent.mkdir(parents=True, exist_ok=True)

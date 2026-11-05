@@ -132,6 +132,8 @@ class TafsirLinter:
 def main():
     parser = argparse.ArgumentParser(description="Lint and validate Tafsir Roman Urdu dataset files.")
     parser.add_argument("--surah", type=int, help="Single Surah number to lint (1..114)")
+    parser.add_argument("--surahs", type=int, nargs="+", help="List of Surahs to lint")
+    parser.add_argument("--range", type=int, nargs=2, metavar=("START", "END"), help="Range of Surahs, e.g. 78 114")
     parser.add_argument("--all", action="store_true", help="Lint all generated Surah files")
     parser.add_argument("--ur-dir", default="data/ur", help="Directory containing source Urdu files")
     parser.add_argument("--ru-dir", default="data/roman_urdu", help="Directory containing Roman Urdu files")
@@ -142,6 +144,10 @@ def main():
     surahs_to_lint = []
     if args.surah:
         surahs_to_lint = [args.surah]
+    elif args.surahs:
+        surahs_to_lint = args.surahs
+    elif args.range:
+        surahs_to_lint = list(range(args.range[0], args.range[1] + 1))
     elif args.all:
         ru_files = sorted(Path(args.ru_dir).glob("*.json"), key=lambda p: int(p.stem) if p.stem.isdigit() else 999)
         surahs_to_lint = [int(p.stem) for p in ru_files if p.stem.isdigit()]
