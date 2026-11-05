@@ -52,10 +52,10 @@ console.log(tafsir[0].text);
 | :--- | :--- | :---: | :---: | :---: |
 | **Milestone 1** | Foundation, PoC, Style Guide & Benchmarks | 1, 112, 113, 114 | 22 / 22 | **✅ 100% Verified** |
 | **Milestone 2** | Juz 'Amma Complete | 78 through 114 | 564 / 564 | **✅ 100% Verified** |
-| **Milestone 3** | High-Frequency Spiritual Surahs | Baqarah, Kahf, Yasin, Mulk, Rahman, Waqi'ah | In Planning | ⏳ Next |
-| **Milestone 4** | Complete Full Exegesis (All 114 Surahs) | 1 through 114 | 6,236 / 6,236 | ⏳ Roadmap |
+| **Milestone 3** | High-Frequency Virtuous Surahs & Al-Baqarah | 2, 18, 36, 55, 56, 67 | 683 / 683 | **✅ 100% Verified** |
+| **Milestone 4** | Complete Full Exegesis (Remaining 70 Surahs) | 1 through 114 | 6,236 / 6,236 | ⏳ In Progress |
 
-**Current Progress**: **38 / 114 Surahs** (571 Ayahs, 3.78M+ characters) with 100% Quality Linter Pass Rate.
+**Current Progress**: **44 / 114 Surahs** (1,254 Ayahs, 11.8M+ characters) with 100% Quality Linter Pass Rate across all files. Over 35% of the global commentary text volume completed!
 
 ---
 

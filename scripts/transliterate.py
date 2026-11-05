@@ -67,13 +67,13 @@ INVIOLABLE RULES:
 """
 
 
-def chunk_text(text: str, max_chars: int = 2500) -> List[str]:
+def chunk_text(text: str, max_chars: int = 1400) -> List[str]:
     """Splits long Urdu text along sentence boundaries (Khatma/Arabic periods/newlines) to prevent token exhaustion."""
     if len(text) <= max_chars:
         return [text]
 
-    # Split on Urdu Khatma (۔), newlines, or sentence boundaries
-    sentences = re.split(r'([۔\n]+)', text)
+    # Split on Urdu Khatma (۔), question marks (؟), exclamations (!), newlines
+    sentences = re.split(r'([۔؟!\n]+)', text)
     chunks = []
     curr = ""
     for i in range(0, len(sentences), 2):
@@ -124,6 +124,7 @@ def call_gemini(urdu_chunk: str, model: str = DEFAULT_MODEL, max_retries: int = 
                     "generationConfig": {
                         "temperature": 0.1,
                         "topP": 0.95,
+                        "maxOutputTokens": 8192
                     }
                 }
 
@@ -140,6 +141,10 @@ def call_gemini(urdu_chunk: str, model: str = DEFAULT_MODEL, max_retries: int = 
                                     if res_text.startswith("```"):
                                         res_text = re.sub(r"^```[a-zA-Z]*\n?", "", res_text)
                                         res_text = re.sub(r"\n?```$", "", res_text).strip()
+                                    finish_reason = candidates[0].get("finishReason", "")
+                                    if finish_reason == "MAX_TOKENS" or (len(urdu_chunk) > 150 and len(res_text) < 0.65 * len(urdu_chunk)):
+                                        print(f"Warning: Incomplete output detected ({finish_reason=}, ratio={len(res_text)/len(urdu_chunk):.2f}). Retrying...")
+                                        continue
                                     return res_text
                         elif resp.status_code in (429, 503):
                             # Rotate key if multi-key available
@@ -159,8 +164,6 @@ def call_gemini(urdu_chunk: str, model: str = DEFAULT_MODEL, max_retries: int = 
                         print(f"Network issue on {current_model}: {e}. Trying next model...")
                         time.sleep(sleep_time)
                         break
-
-    raise RuntimeError(f"All models failed to transliterate chunk of length {len(urdu_chunk)}")
 
     raise RuntimeError(f"All models failed to transliterate chunk of length {len(urdu_chunk)}")
 
