@@ -3,6 +3,10 @@
 .env.*
 !.env.example
 
+# Checkpoints & cache
+data/.checkpoints/
+.checkpoints/
+
 # Python
 __pycache__/
 *.py[cod]

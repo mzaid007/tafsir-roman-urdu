@@ -27,9 +27,11 @@ if sys.platform == "win32":
 # Load environment variables
 load_dotenv()
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+raw_keys = os.getenv("GEMINI_API_KEYS", "") or os.getenv("GEMINI_API_KEY", "")
+API_KEYS = [k.strip() for k in raw_keys.split(",") if k.strip()]
 DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
 FALLBACK_MODELS = ["gemini-3-flash-preview", "gemini-3.5-flash", "gemini-3.5-flash-lite"]
+_current_key_idx = 0
 
 SYSTEM_PROMPT = """You are an expert Islamic Computational Linguist for the Tafsir-Roman-Urdu (TRU) project.
 Your task is to transliterate authentic Urdu Tafsir Ibn Kathir commentary into standardized, highly readable Roman Urdu (Latin script).
@@ -91,63 +93,72 @@ def chunk_text(text: str, max_chars: int = 2500) -> List[str]:
 
 
 def call_gemini(urdu_chunk: str, model: str = DEFAULT_MODEL, max_retries: int = 2) -> str:
-    """Calls Gemini API with automatic exponential backoff, fast model pool fallbacks, and outer recovery rounds."""
-    if not GEMINI_API_KEY:
-        raise ValueError("GEMINI_API_KEY is not set. Please set it in .env or environment.")
+    """Calls Gemini API with multi-key rotation, automatic exponential backoff, fast model fallbacks, and outer recovery rounds."""
+    global _current_key_idx
+    if not API_KEYS:
+        raise ValueError("No Gemini API key configured. Please set GEMINI_API_KEY in .env.")
 
     models_to_try = [model] + [m for m in FALLBACK_MODELS if m != model]
 
-    for pool_round in range(5):
+    for pool_round in range(6):
         if pool_round > 0:
-            wait_time = 10.0 * pool_round
-            print(f"\nAll models temporarily busy/rate-limited. Waiting {wait_time:.0f}s before pool retry (attempt {pool_round + 1}/5)...")
+            wait_time = 15.0 * pool_round
+            print(f"\nAll models/keys temporarily busy. Waiting {wait_time:.0f}s before pool retry (attempt {pool_round + 1}/6)...")
             time.sleep(wait_time)
 
         for current_model in models_to_try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{current_model}:generateContent?key={GEMINI_API_KEY}"
-            payload = {
-                "contents": [
-                    {
-                        "parts": [
-                            {
-                                "text": f"{SYSTEM_PROMPT}\n\nUrdu Source Text to Transliterate:\n{urdu_chunk}"
-                            }
-                        ]
+            # Try across available API keys
+            for key_attempt in range(len(API_KEYS)):
+                current_key = API_KEYS[_current_key_idx]
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{current_model}:generateContent?key={current_key}"
+                payload = {
+                    "contents": [
+                        {
+                            "parts": [
+                                {
+                                    "text": f"{SYSTEM_PROMPT}\n\nUrdu Source Text to Transliterate:\n{urdu_chunk}"
+                                }
+                            ]
+                        }
+                    ],
+                    "generationConfig": {
+                        "temperature": 0.1,
+                        "topP": 0.95,
                     }
-                ],
-                "generationConfig": {
-                    "temperature": 0.1,
-                    "topP": 0.95,
                 }
-            }
 
-            for attempt in range(max_retries):
-                try:
-                    resp = requests.post(url, json=payload, timeout=45)
-                    if resp.status_code == 200:
-                        data = resp.json()
-                        candidates = data.get("candidates", [])
-                        if candidates and "content" in candidates[0]:
-                            parts = candidates[0]["content"].get("parts", [])
-                            if parts:
-                                res_text = parts[0].get("text", "").strip()
-                                # Strip markdown block quotes if present
-                                if res_text.startswith("```"):
-                                    res_text = re.sub(r"^```[a-zA-Z]*\n?", "", res_text)
-                                    res_text = re.sub(r"\n?```$", "", res_text).strip()
-                                return res_text
-                    elif resp.status_code in (429, 503):
-                        sleep_time = 2.0 * (attempt + 1)
-                        print(f"[{current_model}] Status {resp.status_code}. Backing off {sleep_time}s...")
+                for attempt in range(max_retries):
+                    try:
+                        resp = requests.post(url, json=payload, timeout=45)
+                        if resp.status_code == 200:
+                            data = resp.json()
+                            candidates = data.get("candidates", [])
+                            if candidates and "content" in candidates[0]:
+                                parts = candidates[0]["content"].get("parts", [])
+                                if parts:
+                                    res_text = parts[0].get("text", "").strip()
+                                    if res_text.startswith("```"):
+                                        res_text = re.sub(r"^```[a-zA-Z]*\n?", "", res_text)
+                                        res_text = re.sub(r"\n?```$", "", res_text).strip()
+                                    return res_text
+                        elif resp.status_code in (429, 503):
+                            # Rotate key if multi-key available
+                            if len(API_KEYS) > 1:
+                                _current_key_idx = (_current_key_idx + 1) % len(API_KEYS)
+                                print(f"[{current_model}] Status {resp.status_code}. Rotated to key #{_current_key_idx + 1}...")
+                            else:
+                                sleep_time = 2.0 * (attempt + 1)
+                                print(f"[{current_model}] Status {resp.status_code}. Backing off {sleep_time}s...")
+                                time.sleep(sleep_time)
+                            break  # Try next key or model
+                        else:
+                            print(f"[{current_model}] Error HTTP {resp.status_code}: {resp.text[:100]}")
+                            break  # Try next model
+                    except requests.exceptions.RequestException as e:
+                        sleep_time = 2.0
+                        print(f"Network issue on {current_model}: {e}. Trying next model...")
                         time.sleep(sleep_time)
-                    else:
-                        print(f"[{current_model}] Error HTTP {resp.status_code}: {resp.text[:100]}")
-                        break  # Try next model
-                except requests.exceptions.RequestException as e:
-                    sleep_time = 2.0
-                    print(f"Network issue on {current_model}: {e}. Trying next model...")
-                    time.sleep(sleep_time)
-                    break
+                        break
 
     raise RuntimeError(f"All models failed to transliterate chunk of length {len(urdu_chunk)}")
 
