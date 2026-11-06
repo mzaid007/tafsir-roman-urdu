@@ -29,8 +29,14 @@ load_dotenv()
 
 raw_keys = os.getenv("GEMINI_API_KEYS", "") or os.getenv("GEMINI_API_KEY", "")
 API_KEYS = [k.strip() for k in raw_keys.split(",") if k.strip()]
-DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
-FALLBACK_MODELS = ["gemini-3-flash-preview", "gemini-3.5-flash", "gemini-3.5-flash-lite"]
+DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+FALLBACK_MODELS = [
+    "gemini-flash-lite-latest",
+    "gemini-3.1-flash-lite",
+    "gemini-3.6-flash",
+    "gemini-3-flash-preview",
+    "gemini-3.5-flash",
+]
 _current_key_idx = 0
 
 SYSTEM_PROMPT = """You are an expert Islamic Computational Linguist for the Tafsir-Roman-Urdu (TRU) project.
@@ -100,10 +106,10 @@ def call_gemini(urdu_chunk: str, model: str = DEFAULT_MODEL, max_retries: int = 
 
     models_to_try = [model] + [m for m in FALLBACK_MODELS if m != model]
 
-    for pool_round in range(6):
+    for pool_round in range(60):
         if pool_round > 0:
-            wait_time = 15.0 * pool_round
-            print(f"\nAll models/keys temporarily busy. Waiting {wait_time:.0f}s before pool retry (attempt {pool_round + 1}/6)...")
+            wait_time = min(30.0, 10.0 + 5.0 * pool_round)
+            print(f"\nAll models/keys temporarily busy. Waiting {wait_time:.0f}s before pool retry (attempt {pool_round + 1}/60)...")
             time.sleep(wait_time)
 
         for current_model in models_to_try:
@@ -246,8 +252,8 @@ def transliterate_surah(surah: int, data_ur_dir: str = "data/ur", data_ru_dir: s
                     translated_part = call_gemini(chunk, model=model)
                     checkpoints[chunk_key] = translated_part
                     save_checkpoint()
-                    # Polite interval between API calls
-                    time.sleep(0.5)
+                    # Polite interval between API calls to prevent 429 quota exhaustion
+                    time.sleep(1.0)
 
                 ru_chunks.append(translated_part)
 
