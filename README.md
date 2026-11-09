@@ -96,12 +96,12 @@ Developers can plug the dataset into any Qur'an web application (e.g. `quran-web
 
 | Milestone | Scope | Surahs | Ayahs | Status |
 | :--- | :--- | :---: | :---: | :---: |
-| **Milestone 1** | Foundation, PoC, Style Guide & Benchmarks | 1, 112, 113, 114 | 22 / 22 | **✅ 100% Verified** |
-| **Milestone 2** | Juz 'Amma Complete | 78 through 114 | 564 / 564 | **✅ 100% Verified** |
-| **Milestone 3** | High-Frequency Virtuous Surahs & Al-Baqarah | 2, 18, 36, 55, 56, 67 | 683 / 683 | **✅ 100% Verified** |
-| **Milestone 4** | Complete Full Exegesis (All 114 Surahs) | 1 through 114 | 6,236 / 6,236 | **✅ 100% Verified** |
+| **Milestone 1** | Foundation, PoC, Style Guide & Benchmarks | 1, 112, 113, 114 | 22 / 22 | **✅ LLM Verified (Needs Scholarly Review)** |
+| **Milestone 2** | Juz 'Amma Complete | 78 through 114 | 564 / 564 | **✅ LLM Verified (Needs Scholarly Review)** |
+| **Milestone 3** | High-Frequency Virtuous Surahs & Al-Baqarah | 2, 18, 36, 55, 56, 67 | 683 / 683 | **✅ LLM Verified (Needs Scholarly Review)** |
+| **Milestone 4** | Complete Full Exegesis (All 114 Surahs) | 1 through 114 | 6,236 / 6,236 | **✅ LLM Verified (Needs Scholarly Review)** |
 
-**Global Project Status**: **114 / 114 Surahs Complete (100.0%)** | **6,236 / 6,236 Ayahs (100.0%)** | **32,334,947 Roman Urdu Characters (32.33M chars)** with **114/114 (100%) Quality Linter Pass Rate**! The world's first complete, standardized Roman Urdu digital dataset of Tafsir Ibn Kathir is now finished and fully verified.
+**Global Project Status**: **114 / 114 Surahs Complete (100.0%)** | **6,236 / 6,236 Ayahs (100.0%)** | **32,334,947 Roman Urdu Characters (32.33M chars)** with **114/114 (100%) Quality Linter Pass Rate**. Verified using LLM & automated linters; currently awaiting formal Islamic scholarly review (*Alim / Mufti* audit).
 
 ---
 
