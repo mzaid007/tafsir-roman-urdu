@@ -57,17 +57,19 @@ console.log(tafsir[0].text);
 
 ---
 
-## 📖 How to Read the Dataset Right Now
+## 📖 How to Read & Review the Dataset Right Now
 
-End users can read the complete Tafsir immediately using any of the following convenient options:
+End users and scholarly reviewers can access the complete exegesis immediately using any of the following options:
 
-### 1. Interactive Web Reader (Zero Setup)
-Open [`reader.html`](file:///f:/Tafsir-Roman-Urdu/reader.html) directly in any browser (Chrome, Edge, Firefox, Safari) or run a local server:
-```bash
-python -m http.server 8000
-# Open: http://localhost:8000/reader.html
-```
-- **Features**: Chapter dropdown across all 114 Surahs, single Ayah or full-chapter view, light/dark themes, adjustable font size, and optional side-by-side toggle with authentic Urdu source text!
+### 1. Live Web Platform for Reviewers & Readers (Zero Setup)
+👉 **Live URL**: [**https://mzaid007.github.io/tafsir-roman-urdu/**](https://mzaid007.github.io/tafsir-roman-urdu/)
+
+*(To run locally: open [`index.html`](file:///f:/Tafsir-Roman-Urdu/index.html) in your browser or run `python -m http.server 8000`)*
+
+- **◫ Side-by-Side Split View**: Read Roman Urdu transliteration alongside the authentic Urdu Nastaliq text (*Maulana Muhammad Junagarhi*) in real-time.
+- **📝 1-Click Review Notes**: Scholars can click **"Review Note"** on any verse to pre-fill an audit email to `mzaid007@gmail.com` or launch a GitHub issue.
+- **⚡ Quick Verse Jump**: Jump directly to any verse (e.g., `2:255` for Ayat al-Kursi or `18:10` for Al-Kahf).
+- **🌓 Theme & Font Controls**: Toggle Light/Dark mode and resize text dynamically for optimal reading comfort.
 
 ### 2. Command-Line Terminal Reader
 Read any Surah or specific Ayah instantly in your terminal:
