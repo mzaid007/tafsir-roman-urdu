@@ -2,6 +2,17 @@
 
 > **The World's First Complete, 100% Accurate, Standardized Roman Urdu Exegesis of the Holy Qur'an (Tafsir Ibn Kathir).**
 
+> [!IMPORTANT]
+> ### ⚠️ Scholarly Review & AI Transliteration Disclaimer
+> This dataset was generated through systematic, faithful transliteration of authentic Urdu *Tafsir Ibn Kathir* (translated by Maulana Muhammad Junagarhi) using Large Language Models (LLMs) governed by strict deterministic linguistic rules, sentence-boundary chunking, and automated integrity linters. 
+>
+> **Please note that this dataset has NOT yet been formally audited or reviewed by a certified Islamic scholar (*Alim* / *Mufti*).**
+>
+> If you are a qualified Islamic scholar, academic, computational linguist, or fluent reader and are interested in reviewing, certifying, or contributing corrections to this dataset, please contact:
+> - **Maintainer**: Zaid
+> - **Email**: [mzaid007@gmail.com](mailto:mzaid007@gmail.com)
+> - **Feedback & Issues**: You may also open an issue or pull request directly on this repository. Every contribution to preserve and verify Allah's Book and its classical exegesis is deeply appreciated.
+
 ---
 
 ## 🌟 Mission & Background
@@ -43,6 +54,39 @@ const res = await fetch('https://cdn.jsdelivr.net/gh/mzaid007/tafsir-roman-urdu@
 const tafsir = await res.json();
 console.log(tafsir[0].text);
 ```
+
+---
+
+## 📖 How to Read the Dataset Right Now
+
+End users can read the complete Tafsir immediately using any of the following convenient options:
+
+### 1. Interactive Web Reader (Zero Setup)
+Open [`reader.html`](file:///f:/Tafsir-Roman-Urdu/reader.html) directly in any browser (Chrome, Edge, Firefox, Safari) or run a local server:
+```bash
+python -m http.server 8000
+# Open: http://localhost:8000/reader.html
+```
+- **Features**: Chapter dropdown across all 114 Surahs, single Ayah or full-chapter view, light/dark themes, adjustable font size, and optional side-by-side toggle with authentic Urdu source text!
+
+### 2. Command-Line Terminal Reader
+Read any Surah or specific Ayah instantly in your terminal:
+```bash
+# Read Surah 1 (Al-Fatiha) Ayah 1
+python scripts/reader.py 1 1
+
+# Read Surah 18 (Al-Kahf) completely
+python scripts/reader.py 18
+
+# Read Surah 36 (Ya-Sin) Ayah 58
+python scripts/reader.py 36 58
+```
+
+### 3. Direct JSON Access
+Every chapter is available as a standardized JSON file under `data/roman_urdu/{1..114}.json`. Open any file in VS Code, Notepad, or any JSON reader.
+
+### 4. Quran Web & Mobile Apps
+Developers can plug the dataset into any Qur'an web application (e.g. `quran-web`) by pointing to the CDN endpoint or copying the `data/roman_urdu` directory into their project's public folder.
 
 ---
 
