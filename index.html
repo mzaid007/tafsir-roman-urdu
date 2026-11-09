@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tafsir-Roman-Urdu (TRU) — Scholarly Review & Reader Platform</title>
-  <meta name="description" content="The world's first complete, standardized Roman Urdu transliteration of Tafsir Ibn Kathir across all 114 Surahs (6,236 Ayahs).">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Tafsir-Roman-Urdu (TRU) — Read & Review Tafsir Ibn Kathir</title>
+  <meta name="description" content="The world's first complete Roman Urdu transliteration of Tafsir Ibn Kathir across all 114 Surahs (6,236 Ayahs). Machine-verified via LLM, open for scholarly review.">
+  <meta name="theme-color" content="#0d1117">
+  
+  <!-- Preconnect & Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --bg: #0d1117;
       --card-bg: #161b22;
+      --card-hover: #1c2128;
       --border: #30363d;
       --text: #c9d1d9;
       --text-muted: #8b949e;
@@ -21,79 +26,114 @@
       --gold-bg: rgba(210, 153, 34, 0.12);
       --green: #238636;
       --green-hover: #2ea043;
-      --urdu-text: #7ee787;
+      --urdu-color: #7ee787;
+      --header-bg: rgba(22, 27, 34, 0.85);
       --font-scale: 1.05rem;
+      --bottom-bar-height: 60px;
     }
 
     [data-theme="light"] {
-      --bg: #f6f8fa;
+      --bg: #f8fafc;
       --card-bg: #ffffff;
-      --border: #d0d7de;
-      --text: #24292f;
-      --text-muted: #57606a;
-      --accent: #0969da;
-      --accent-hover: #0550ae;
-      --gold: #9a6700;
-      --gold-bg: rgba(154, 103, 0, 0.08);
-      --green: #1a7f37;
-      --green-hover: #2da44e;
-      --urdu-text: #1a7f37;
+      --card-hover: #f1f5f9;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --gold: #b45309;
+      --gold-bg: rgba(180, 83, 9, 0.08);
+      --green: #15803d;
+      --green-hover: #166534;
+      --urdu-color: #166534;
+      --header-bg: rgba(255, 255, 255, 0.9);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.75;
+      line-height: 1.8;
       transition: background 0.2s, color 0.2s;
+      padding-bottom: 80px; /* Space for mobile bottom bar */
     }
 
+    /* Top Navigation Bar */
     header {
-      background: var(--card-bg);
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: 10px 20px;
+      padding: 10px 16px;
     }
 
-    .header-content {
-      max-width: 1400px;
+    .nav-container {
+      max-width: 1300px;
       margin: 0 auto;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
     }
 
-    .logo {
+    .brand {
       display: flex;
       align-items: center;
       gap: 10px;
       font-weight: 700;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--accent);
       text-decoration: none;
+      flex-shrink: 0;
     }
 
-    .logo-badge {
+    .brand-badge {
       background: var(--green);
-      color: #fff;
-      font-size: 0.72rem;
+      color: #ffffff;
+      font-size: 0.7rem;
       padding: 2px 7px;
       border-radius: 12px;
       font-weight: 600;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
 
-    .controls {
+    .top-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      position: sticky;
+      top: 57px;
+      z-index: 90;
+    }
+
+    .controls-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .control-group {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -104,11 +144,17 @@
       background: var(--bg);
       color: var(--text);
       border: 1px solid var(--border);
-      padding: 7px 12px;
-      border-radius: 6px;
+      padding: 8px 12px;
+      border-radius: 8px;
       font-size: 0.88rem;
       outline: none;
       font-family: inherit;
+      min-height: 40px; /* Touch target */
+    }
+
+    select {
+      cursor: pointer;
+      max-width: 260px;
     }
 
     select:focus, button:focus, input:focus {
@@ -119,8 +165,14 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      transition: background 0.15s, border-color 0.15s;
+      justify-content: center;
+      gap: 6px;
+      font-weight: 500;
+      transition: background 0.15s, border-color 0.15s, transform 0.05s;
+    }
+
+    button:active {
+      transform: scale(0.97);
     }
 
     button:hover {
@@ -129,184 +181,212 @@
 
     .btn-green {
       background: var(--green);
-      color: #fff;
+      color: #ffffff;
       border-color: var(--green);
     }
     .btn-green:hover {
       background: var(--green-hover);
     }
 
-    .view-mode-group {
+    /* Segmented View Mode Toggle */
+    .segmented-control {
       display: inline-flex;
       background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 2px;
+      border-radius: 8px;
+      padding: 3px;
     }
 
-    .view-mode-group button {
+    .segmented-control button {
       border: none;
-      padding: 5px 10px;
+      padding: 6px 12px;
       font-size: 0.82rem;
-      border-radius: 4px;
+      border-radius: 6px;
       background: transparent;
       color: var(--text-muted);
+      min-height: 32px;
     }
 
-    .view-mode-group button.active {
+    .segmented-control button.active {
       background: var(--accent);
       color: #ffffff;
       font-weight: 600;
     }
 
-    .main-container {
-      max-width: 1400px;
+    /* Main Container */
+    .main-wrapper {
+      max-width: 1300px;
       margin: 20px auto;
       padding: 0 16px;
     }
 
-    .disclaimer-banner {
+    /* Disclaimer Alert */
+    .disclaimer-card {
       background: var(--gold-bg);
       border: 1px solid var(--gold);
-      color: var(--text);
-      padding: 14px 18px;
-      border-radius: 8px;
+      border-radius: 10px;
+      padding: 16px 20px;
       margin-bottom: 24px;
-      font-size: 0.92rem;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
+      gap: 14px;
+      font-size: 0.92rem;
     }
 
-    .disclaimer-text {
-      flex: 1 1 600px;
+    .disclaimer-card strong {
+      color: var(--gold);
     }
 
-    .disclaimer-banner a {
+    .disclaimer-card a {
       color: var(--accent);
       text-decoration: underline;
     }
 
-    .surah-header {
+    /* Surah Header */
+    .surah-banner {
       text-align: center;
-      margin-bottom: 28px;
-      padding-bottom: 16px;
+      padding: 24px 16px;
+      margin-bottom: 24px;
       border-bottom: 1px solid var(--border);
     }
 
-    .surah-header h1 {
-      font-size: 2rem;
-      margin-bottom: 6px;
+    .surah-banner h1 {
+      font-size: 2.1rem;
       color: var(--text);
+      margin-bottom: 8px;
+      font-weight: 700;
     }
 
-    .surah-header .meta {
+    .surah-banner .sub {
       color: var(--text-muted);
       font-size: 0.95rem;
     }
 
-    .jump-bar {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 15px 0;
-      flex-wrap: wrap;
+    .quick-jump-box {
+      margin-top: 14px;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
     }
 
+    /* Ayah Card */
     .ayah-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 24px;
       margin-bottom: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
 
-    .card-top {
+    .ayah-card:hover {
+      border-color: rgba(88, 166, 255, 0.4);
+    }
+
+    .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
       border-bottom: 1px solid var(--border);
     }
 
-    .ayah-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    .ayah-tag {
       background: rgba(88, 166, 255, 0.12);
       color: var(--accent);
       font-weight: 700;
-      font-size: 0.9rem;
-      padding: 4px 12px;
+      font-size: 0.92rem;
+      padding: 4px 14px;
       border-radius: 20px;
     }
 
-    .card-actions {
+    .card-tools {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
     }
 
-    .btn-action {
-      font-size: 0.78rem;
+    .btn-sm {
+      min-height: 32px;
       padding: 4px 10px;
-      border-radius: 5px;
+      font-size: 0.78rem;
+      border-radius: 6px;
     }
 
-    /* Comparison Split View */
-    .split-layout {
+    /* Layout Split */
+    .split-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      gap: 28px;
     }
 
-    @media (max-width: 900px) {
-      .split-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .col-header {
-      font-size: 0.8rem;
+    .column-title {
+      font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--text-muted);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       font-weight: 600;
     }
 
-    .commentary-roman {
+    .text-roman {
       white-space: pre-wrap;
       font-size: var(--font-scale);
       line-height: 1.85;
       color: var(--text);
     }
 
-    .commentary-urdu {
-      font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', Arial, sans-serif;
+    .text-urdu {
+      font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', serif;
       direction: rtl;
       text-align: right;
-      font-size: calc(var(--font-scale) * 1.15);
-      line-height: 2.3;
-      color: var(--urdu-text);
+      font-size: calc(var(--font-scale) * 1.18);
+      line-height: 2.4;
+      color: var(--urdu-color);
       white-space: pre-wrap;
     }
 
-    .loading-spinner {
+    /* Mobile Bottom Navigation Bar */
+    .mobile-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-bar-height);
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 16px;
+      z-index: 100;
+    }
+
+    .mobile-bottom-bar button {
+      flex: 1;
+      max-width: 140px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .mobile-ayah-counter {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
       text-align: center;
-      padding: 60px 20px;
-      color: var(--text-muted);
-      font-size: 1.15rem;
+      flex: 1;
     }
 
     /* Review Feedback Modal */
-    .modal-overlay {
+    .modal-backdrop {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -314,131 +394,207 @@
       z-index: 1000;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 16px;
     }
 
-    .modal-box {
+    .modal-content {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      max-width: 580px;
+      border-radius: 14px;
+      max-width: 550px;
       width: 100%;
       padding: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
 
-    .modal-box h3 {
-      margin-bottom: 8px;
+    .modal-content h3 {
       color: var(--accent);
+      margin-bottom: 6px;
+      font-size: 1.25rem;
     }
 
-    .modal-box textarea {
+    .modal-content p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 14px;
+    }
+
+    .modal-content textarea {
       width: 100%;
-      height: 130px;
+      height: 140px;
       background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 10px;
-      border-radius: 6px;
+      padding: 12px;
+      border-radius: 8px;
       font-family: inherit;
-      font-size: 0.9rem;
-      margin: 12px 0;
+      font-size: 0.92rem;
+      outline: none;
       resize: vertical;
+      margin-bottom: 18px;
     }
 
     .modal-actions {
       display: flex;
       justify-content: flex-end;
       gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 900px) {
+      .split-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .text-urdu {
+        padding-top: 16px;
+        border-top: 1px dashed var(--border);
+      }
+
+      .controls-bar {
+        top: 51px;
+      }
+
+      select {
+        max-width: 100%;
+        flex: 1 1 100%;
+      }
+
+      .surah-banner h1 {
+        font-size: 1.6rem;
+      }
+
+      .ayah-card {
+        padding: 16px;
+      }
+    }
+
+    @media (min-width: 901px) {
+      .mobile-bottom-bar {
+        display: none; /* Hide bottom thumb bar on desktop */
+      }
+      body {
+        padding-bottom: 30px;
+      }
+    }
+
+    .spinner {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      font-size: 1.15rem;
     }
 
     footer {
       text-align: center;
-      padding: 36px 16px;
+      padding: 30px 16px;
       color: var(--text-muted);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       border-top: 1px solid var(--border);
-      margin-top: 50px;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
+  <!-- Top Navigation Header -->
   <header>
-    <div class="header-content">
-      <a href="#" class="logo">
+    <div class="nav-container">
+      <a href="#" class="brand">
         <span>📖</span> Tafsir Roman Urdu
-        <span class="logo-badge">114 Surahs Complete</span>
+        <span class="brand-badge">All 114 Surahs</span>
       </a>
 
-      <div class="controls">
-        <select id="surahSelect" aria-label="Select Surah"></select>
-        <select id="ayahSelect" aria-label="Select Ayah">
-          <option value="all">View Entire Surah</option>
-        </select>
-
-        <div class="view-mode-group">
-          <button id="modeSide" class="active" title="Side-by-side comparison for reviewers">◫ Side-by-Side</button>
-          <button id="modeRoman" title="Roman Urdu Only">Roman Only</button>
-          <button id="modeUrdu" title="Urdu Nastaliq Only">Urdu Only</button>
-        </div>
-
-        <button id="prevBtn" title="Previous Chapter">◀</button>
-        <button id="nextBtn" title="Next Chapter">▶</button>
-        <button id="fontDec" title="Smaller Font">A-</button>
-        <button id="fontInc" title="Larger Font">A+</button>
-        <button id="themeToggle" title="Toggle Dark/Light">🌓</button>
+      <div class="top-tools">
+        <button id="fontDec" title="Smaller Font" aria-label="Decrease text size">A-</button>
+        <button id="fontInc" title="Larger Font" aria-label="Increase text size">A+</button>
+        <button id="themeToggle" title="Toggle Theme" aria-label="Toggle theme">🌓</button>
       </div>
     </div>
   </header>
 
-  <div class="main-container">
+  <!-- Secondary Interactive Controls -->
+  <section class="controls-bar">
+    <div class="controls-inner">
+      <div class="control-group">
+        <select id="surahSelect" aria-label="Select Chapter"></select>
+        <select id="ayahSelect" aria-label="Select Verse"></select>
+      </div>
 
-    <div class="disclaimer-banner">
-      <div class="disclaimer-text">
-        <strong>⚠️ Scholarly Review Notice:</strong> This complete 114-Surah dataset was transliterated from authentic Urdu <em>Tafsir Ibn Kathir</em> (Maulana Junagarhi) via LLM and has <strong>not yet been reviewed by a certified Islamic scholar (*Alim* / *Mufti*)</strong>. If you can audit or review this work, please contact Zaid at <a href="mailto:mzaid007@gmail.com">mzaid007@gmail.com</a>.
+      <div class="control-group">
+        <div class="segmented-control" role="group" aria-label="View Mode">
+          <button id="modeSide" class="active" title="Side-by-side comparison for reviewers">◫ Side-by-Side</button>
+          <button id="modeRoman" title="Roman Urdu Only">Roman</button>
+          <button id="modeUrdu" title="Urdu Nastaliq Only">اردو</button>
+        </div>
+
+        <button class="btn-green" onclick="openReviewModal(currentSurah, 'General')">
+          📝 Review Note
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Scholarly Review Notice Banner -->
+    <div class="disclaimer-card">
+      <div>
+        <strong>⚠️ Scholarly Review Notice:</strong> This complete 114-Surah exegesis was transliterated from authentic Urdu <em>Tafsir Ibn Kathir</em> (Maulana Junagarhi) via LLM. It is <strong>machine-verified and currently awaiting formal scholarly review (*Alim / Mufti* audit)</strong>.
       </div>
       <div>
-        <button class="btn-green" onclick="openReviewModal(currentSurah, 'General')">✉️ Submit Review / Feedback</button>
+        <a href="mailto:mzaid007@gmail.com?subject=[TRU%20Review]%20Scholarly%20Feedback" style="font-weight:600;">Contact Zaid (mzaid007@gmail.com) ➔</a>
       </div>
     </div>
 
-    <div class="surah-header">
-      <h1 id="surahTitle">Surah Al-Fatiha</h1>
-      <div class="meta" id="surahMeta">Surah 1 • 7 Ayahs • Tafsir Ibn Kathir</div>
-      <div class="jump-bar">
-        <input type="text" id="jumpInput" placeholder="Jump to verse, e.g. 2:255 or 18:10" style="width:260px;">
-        <button id="jumpBtn">Jump ➔</button>
+    <!-- Chapter Header & Jump Bar -->
+    <div class="surah-banner">
+      <h1 id="surahHeading">Surah Al-Fatiha</h1>
+      <div class="sub" id="surahDetails">Surah 1 • 7 Ayahs • Tafsir Ibn Kathir</div>
+      <div class="quick-jump-box">
+        <input type="text" id="jumpField" placeholder="Jump to verse, e.g. 2:255 or 18:10" aria-label="Verse Reference">
+        <button id="jumpTrigger">Go ➔</button>
       </div>
     </div>
 
-    <div id="contentArea">
-      <div class="loading-spinner">Loading exegesis dataset...</div>
+    <!-- Commentary Rendering Target -->
+    <div id="renderTarget">
+      <div class="spinner">Loading exegesis dataset...</div>
     </div>
 
-  </div>
+  </main>
 
-  <!-- Review Modal -->
-  <div class="modal-overlay" id="reviewModal">
-    <div class="modal-box">
-      <h3 id="modalTitle">Suggest Correction / Scholarly Note</h3>
-      <p style="font-size:0.86rem; color:var(--text-muted);" id="modalSubtitle">Submitting review feedback for Surah 1, Ayah 1</p>
-      <textarea id="modalFeedbackText" placeholder="Describe any correction, missing phrase, vowel nuance, or scholarly note..."></textarea>
+  <!-- Mobile Bottom Sticky Navigation -->
+  <nav class="mobile-bottom-bar" aria-label="Mobile verse navigation">
+    <button id="mbPrev">◀ Prev</button>
+    <div class="mobile-ayah-counter" id="mbCounter">Ayah 1 / 7</div>
+    <button id="mbNext">Next ▶</button>
+  </nav>
+
+  <!-- Review Modal Overlay -->
+  <div class="modal-backdrop" id="reviewModal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <h3 id="modalHeading">Suggest Correction / Scholarly Note</h3>
+      <p id="modalRefText">Submitting review feedback for Surah 1, Ayah 1</p>
+      <textarea id="modalText" placeholder="Please describe any correction, missing nuance, vowel spelling, or scholarly remarks..."></textarea>
       <div class="modal-actions">
         <button onclick="closeReviewModal()">Cancel</button>
-        <button class="btn-green" id="modalSendEmail">Send via Email</button>
-        <button id="modalOpenGitHub">Open GitHub Issue</button>
+        <button class="btn-green" id="btnModalEmail">Send via Email</button>
+        <button id="btnModalGitHub">Open GitHub Issue</button>
       </div>
     </div>
   </div>
 
   <footer>
-    <strong>Tafsir-Roman-Urdu (TRU)</strong> • Open-Source Exegesis Dataset • Translated by Maulana Muhammad Junagarhi (Tafsir Ibn Kathir)<br>
-    Maintained by Zaid (<a href="mailto:mzaid007@gmail.com" style="color:var(--accent);">mzaid007@gmail.com</a>) • Open access under CC BY-SA 4.0
+    <strong>Tafsir-Roman-Urdu (TRU)</strong> • Open-Source Dataset • Translated by Maulana Muhammad Junagarhi (Tafsir Ibn Kathir)<br>
+    Maintained by Zaid (<a href="mailto:mzaid007@gmail.com" style="color:var(--accent);">mzaid007@gmail.com</a>) • Open-Access CC BY-SA 4.0
   </footer>
 
   <script>
-    const SURAH_NAMES = [
+    const CHAPTERS = [
       "1. Al-Fatiha (7)", "2. Al-Baqarah (286)", "3. Ali 'Imran (200)", "4. An-Nisa (176)",
       "5. Al-Ma'idah (120)", "6. Al-An'am (165)", "7. Al-A'raf (206)", "8. Al-Anfal (75)",
       "9. At-Tawbah (129)", "10. Yunus (109)", "11. Hud (123)", "12. Yusuf (111)",
@@ -473,33 +629,34 @@
     let currentSurah = 1;
     let currentData = [];
     let urduData = [];
-    let currentViewMode = "side"; // "side", "roman", "urdu"
-    let currentFontSize = 1.05;
+    let currentMode = "side"; // "side", "roman", "urdu"
+    let fontScale = 1.05;
 
-    let activeModalSurah = 1;
-    let activeModalAyah = 1;
+    let modalSurah = 1;
+    let modalAyah = 1;
 
     const surahSelect = document.getElementById("surahSelect");
     const ayahSelect = document.getElementById("ayahSelect");
-    const contentArea = document.getElementById("contentArea");
-    const surahTitle = document.getElementById("surahTitle");
-    const surahMeta = document.getElementById("surahMeta");
+    const renderTarget = document.getElementById("renderTarget");
+    const surahHeading = document.getElementById("surahHeading");
+    const surahDetails = document.getElementById("surahDetails");
+    const mbCounter = document.getElementById("mbCounter");
 
-    // Populate Surah Dropdown
-    SURAH_NAMES.forEach((name, i) => {
+    // Initialize Dropdowns
+    CHAPTERS.forEach((c, idx) => {
       const opt = document.createElement("option");
-      opt.value = i + 1;
-      opt.textContent = name;
+      opt.value = idx + 1;
+      opt.textContent = c;
       surahSelect.appendChild(opt);
     });
 
     async function loadSurah(num, targetAyah = null) {
       currentSurah = num;
       surahSelect.value = num;
-      contentArea.innerHTML = `<div class="loading-spinner">Loading Surah ${num} exegesis...</div>`;
+      renderTarget.innerHTML = `<div class="spinner">Loading Surah ${num} exegesis...</div>`;
 
-      const surahNameStr = SURAH_NAMES[num - 1].split(". ")[1];
-      surahTitle.textContent = `Surah ${surahNameStr}`;
+      const surahName = CHAPTERS[num - 1].split(". ")[1];
+      surahHeading.textContent = `Surah ${surahName}`;
 
       const localRu = `data/roman_urdu/${num}.json`;
       const cdnRu = `https://cdn.jsdelivr.net/gh/mzaid007/tafsir-roman-urdu@main/data/roman_urdu/${num}.json`;
@@ -519,32 +676,33 @@
           urduData = [];
         }
 
-        surahMeta.textContent = `Surah ${num} • ${currentData.length} Ayahs • Tafsir Ibn Kathir (Maulana Junagarhi)`;
-        populateAyahSelect(currentData.length);
+        surahDetails.textContent = `Surah ${num} • ${currentData.length} Ayahs • Tafsir Ibn Kathir (Maulana Junagarhi)`;
+        populateAyahs(currentData.length);
 
         if (targetAyah) {
           ayahSelect.value = targetAyah;
         }
 
-        renderContent();
+        renderVerses();
+        updateMobileCounter();
 
         if (targetAyah) {
           setTimeout(() => {
-            const el = document.getElementById(`ayah-${targetAyah}`);
+            const el = document.getElementById(`verse-${targetAyah}`);
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }, 100);
         }
       } catch (err) {
-        contentArea.innerHTML = `
-          <div class="disclaimer-banner" style="border-color:#f85149; background:rgba(248,81,73,0.1);">
-            Error loading Surah ${num}: ${err.message}. Please verify network connection or CDN access.
+        renderTarget.innerHTML = `
+          <div class="disclaimer-card" style="border-color:#f85149; background:rgba(248,81,73,0.1);">
+            Error loading Surah ${num}: ${err.message}. Please check network access or CORS settings.
           </div>
         `;
       }
     }
 
-    function populateAyahSelect(count) {
-      ayahSelect.innerHTML = `<option value="all">View Entire Surah (1–${count})</option>`;
+    function populateAyahs(count) {
+      ayahSelect.innerHTML = `<option value="all">View Entire Chapter (1–${count})</option>`;
       for (let i = 1; i <= count; i++) {
         const opt = document.createElement("option");
         opt.value = i;
@@ -553,82 +711,91 @@
       }
     }
 
-    function renderContent() {
-      const selectedAyah = ayahSelect.value;
-      const itemsToRender = selectedAyah === "all" 
-        ? currentData 
-        : currentData.filter(x => x.ayah == selectedAyah);
+    function updateMobileCounter() {
+      const sel = ayahSelect.value;
+      if (sel === "all") {
+        mbCounter.textContent = `Surah ${currentSurah} (All)`;
+      } else {
+        mbCounter.textContent = `Ayah ${sel} / ${currentData.length}`;
+      }
+    }
 
-      if (!itemsToRender.length) {
-        contentArea.innerHTML = `<div class="loading-spinner">No commentary found for selection.</div>`;
+    function renderVerses() {
+      const selected = ayahSelect.value;
+      const items = selected === "all" ? currentData : currentData.filter(x => x.ayah == selected);
+
+      if (!items.length) {
+        renderTarget.innerHTML = `<div class="spinner">No commentary available.</div>`;
         return;
       }
 
       const urduMap = {};
       urduData.forEach(x => { urduMap[x.ayah] = x.text; });
 
-      contentArea.innerHTML = itemsToRender.map(item => {
+      renderTarget.innerHTML = items.map(item => {
         const urduText = urduMap[item.ayah] || "";
         const romanText = item.text || "<em>(Commentary grouped with adjacent Ayahs)</em>";
 
-        let bodyHtml = "";
-        if (currentViewMode === "side") {
-          bodyHtml = `
-            <div class="split-layout">
+        let bodyContent = "";
+        if (currentMode === "side") {
+          bodyContent = `
+            <div class="split-grid">
               <div>
-                <div class="col-header">Roman Urdu Exegesis</div>
-                <div class="commentary-roman">${romanText}</div>
+                <div class="column-title">Roman Urdu Exegesis</div>
+                <div class="text-roman">${romanText}</div>
               </div>
               <div>
-                <div class="col-header" style="text-align:right;">Urdu Source (مولانا جوناگڑھی)</div>
-                <div class="commentary-urdu">${urduText || '—'}</div>
+                <div class="column-title" style="text-align:right;">Urdu Source (مولانا جوناگڑھی)</div>
+                <div class="text-urdu">${urduText || '—'}</div>
               </div>
             </div>
           `;
-        } else if (currentViewMode === "roman") {
-          bodyHtml = `<div class="commentary-roman">${romanText}</div>`;
-        } else if (currentViewMode === "urdu") {
-          bodyHtml = `<div class="commentary-urdu">${urduText || '—'}</div>`;
+        } else if (currentMode === "roman") {
+          bodyContent = `<div class="text-roman">${romanText}</div>`;
+        } else if (currentMode === "urdu") {
+          bodyContent = `<div class="text-urdu">${urduText || '—'}</div>`;
         }
 
         return `
-          <article class="ayah-card" id="ayah-${item.ayah}">
-            <div class="card-top">
-              <div class="ayah-badge">Ayah ${item.ayah}</div>
-              <div class="card-actions">
-                <button class="btn-action" onclick="copyAyah(${item.ayah})">📋 Copy</button>
-                <button class="btn-action btn-green" onclick="openReviewModal(${currentSurah}, ${item.ayah})">📝 Review Note</button>
+          <article class="ayah-card" id="verse-${item.ayah}">
+            <div class="card-header">
+              <span class="ayah-tag">Surah ${currentSurah}:${item.ayah}</span>
+              <div class="card-tools">
+                <button class="btn-sm" onclick="copyVerse(${item.ayah})">📋 Copy</button>
+                <button class="btn-sm" onclick="shareVerse(${item.ayah})">↗ Share</button>
+                <button class="btn-sm btn-green" onclick="openReviewModal(${currentSurah}, ${item.ayah})">📝 Review</button>
               </div>
             </div>
-            ${bodyHtml}
+            ${bodyContent}
           </article>
         `;
       }).join("");
 
-      applyFontSize();
+      applyFont();
     }
 
-    function applyFontSize() {
-      document.documentElement.style.setProperty('--font-scale', `${currentFontSize}rem`);
+    function applyFont() {
+      document.documentElement.style.setProperty('--font-scale', `${fontScale}rem`);
     }
 
-    function setViewMode(mode) {
-      currentViewMode = mode;
-      document.querySelectorAll(".view-mode-group button").forEach(b => b.classList.remove("active"));
+    function setMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll(".segmented-control button").forEach(b => b.classList.remove("active"));
       if (mode === "side") document.getElementById("modeSide").classList.add("active");
       if (mode === "roman") document.getElementById("modeRoman").classList.add("active");
       if (mode === "urdu") document.getElementById("modeUrdu").classList.add("active");
-      renderContent();
+      renderVerses();
     }
 
-    // Modal Operations
+    // Modal Handling
     window.openReviewModal = function(surah, ayah) {
-      activeModalSurah = surah;
-      activeModalAyah = ayah;
-      const title = ayah === 'General' ? `General Review: Surah ${surah}` : `Review Note: Surah ${surah}, Ayah ${ayah}`;
-      document.getElementById("modalTitle").textContent = title;
-      document.getElementById("modalSubtitle").textContent = `Propose an edit, fix an honorific, or leave a scholarly audit remark for this verse.`;
-      document.getElementById("modalFeedbackText").value = "";
+      modalSurah = surah;
+      modalAyah = ayah;
+      document.getElementById("modalHeading").textContent = ayah === 'General'
+        ? `General Review: Surah ${surah}`
+        : `Review Note: Surah ${surah}, Ayah ${ayah}`;
+      document.getElementById("modalRefText").textContent = `Scholarly audit feedback for Surah ${surah}, Ayah ${ayah}.`;
+      document.getElementById("modalText").value = "";
       document.getElementById("reviewModal").style.display = "flex";
     };
 
@@ -636,50 +803,86 @@
       document.getElementById("reviewModal").style.display = "none";
     };
 
-    document.getElementById("modalSendEmail").addEventListener("click", () => {
-      const notes = encodeURIComponent(document.getElementById("modalFeedbackText").value);
-      const subject = encodeURIComponent(`[TRU Review] Surah ${activeModalSurah} Ayah ${activeModalAyah}`);
-      const body = encodeURIComponent(`As-salamu alaykum Zaid,\n\nHere is my review note for Surah ${activeModalSurah}, Ayah ${activeModalAyah}:\n\n${document.getElementById("modalFeedbackText").value}\n\n-- Reviewer`);
+    document.getElementById("btnModalEmail").addEventListener("click", () => {
+      const notes = document.getElementById("modalText").value;
+      const subject = encodeURIComponent(`[TRU Review] Surah ${modalSurah} Ayah ${modalAyah}`);
+      const body = encodeURIComponent(`As-salamu alaykum Zaid,\n\nHere is my review note for Surah ${modalSurah}, Ayah ${modalAyah}:\n\n${notes}\n\n-- Reviewer`);
       window.location.href = `mailto:mzaid007@gmail.com?subject=${subject}&body=${body}`;
     });
 
-    document.getElementById("modalOpenGitHub").addEventListener("click", () => {
-      const notes = encodeURIComponent(document.getElementById("modalFeedbackText").value);
-      const title = encodeURIComponent(`[Review] Surah ${activeModalSurah}:${activeModalAyah} Scholarly Correction`);
-      const body = encodeURIComponent(`### Surah ${activeModalSurah}, Ayah ${activeModalAyah} Review\n\n**Reviewer Notes**:\n${document.getElementById("modalFeedbackText").value}`);
+    document.getElementById("btnModalGitHub").addEventListener("click", () => {
+      const notes = document.getElementById("modalText").value;
+      const title = encodeURIComponent(`[Review] Surah ${modalSurah}:${modalAyah} Scholarly Audit`);
+      const body = encodeURIComponent(`### Surah ${modalSurah}, Ayah ${modalAyah} Review\n\n**Remarks**:\n${notes}`);
       window.open(`https://github.com/mzaid007/tafsir-roman-urdu/issues/new?title=${title}&body=${body}`, '_blank');
     });
 
-    window.copyAyah = function(ayah) {
-      const item = currentData.find(x => x.ayah == ayah);
-      if (item && item.text) {
-        navigator.clipboard.writeText(`[Surah ${currentSurah}:${ayah}]\n${item.text}`);
+    // Copy & Native Share
+    window.copyVerse = function(ayah) {
+      const v = currentData.find(x => x.ayah == ayah);
+      if (v && v.text) {
+        navigator.clipboard.writeText(`[Tafsir Ibn Kathir - Surah ${currentSurah}:${ayah}]\n${v.text}`);
         alert(`Ayah ${ayah} commentary copied to clipboard!`);
       }
     };
 
+    window.shareVerse = function(ayah) {
+      const v = currentData.find(x => x.ayah == ayah);
+      const shareData = {
+        title: `Tafsir Ibn Kathir (Surah ${currentSurah}:${ayah})`,
+        text: v ? v.text.substring(0, 300) + '...' : '',
+        url: window.location.href
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        copyVerse(ayah);
+      }
+    };
+
+    // Mobile Bottom Bar Navigation
+    document.getElementById("mbPrev").addEventListener("click", () => {
+      const sel = ayahSelect.value;
+      if (sel === "all" || sel == 1) {
+        if (currentSurah > 1) loadSurah(currentSurah - 1);
+      } else {
+        ayahSelect.value = parseInt(sel) - 1;
+        renderVerses();
+        updateMobileCounter();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    document.getElementById("mbNext").addEventListener("click", () => {
+      const sel = ayahSelect.value;
+      if (sel === "all" || sel == currentData.length) {
+        if (currentSurah < 114) loadSurah(currentSurah + 1);
+      } else {
+        ayahSelect.value = parseInt(sel) + 1;
+        renderVerses();
+        updateMobileCounter();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
     // Event Listeners
     surahSelect.addEventListener("change", (e) => loadSurah(parseInt(e.target.value)));
-    ayahSelect.addEventListener("change", () => renderContent());
-
-    document.getElementById("modeSide").addEventListener("click", () => setViewMode("side"));
-    document.getElementById("modeRoman").addEventListener("click", () => setViewMode("roman"));
-    document.getElementById("modeUrdu").addEventListener("click", () => setViewMode("urdu"));
-
-    document.getElementById("prevBtn").addEventListener("click", () => {
-      if (currentSurah > 1) loadSurah(currentSurah - 1);
+    ayahSelect.addEventListener("change", () => {
+      renderVerses();
+      updateMobileCounter();
     });
-    document.getElementById("nextBtn").addEventListener("click", () => {
-      if (currentSurah < 114) loadSurah(currentSurah + 1);
-    });
+
+    document.getElementById("modeSide").addEventListener("click", () => setMode("side"));
+    document.getElementById("modeRoman").addEventListener("click", () => setMode("roman"));
+    document.getElementById("modeUrdu").addEventListener("click", () => setMode("urdu"));
 
     document.getElementById("fontInc").addEventListener("click", () => {
-      currentFontSize = Math.min(1.5, currentFontSize + 0.08);
-      applyFontSize();
+      fontScale = Math.min(1.5, fontScale + 0.08);
+      applyFont();
     });
     document.getElementById("fontDec").addEventListener("click", () => {
-      currentFontSize = Math.max(0.85, currentFontSize - 0.08);
-      applyFontSize();
+      fontScale = Math.max(0.85, fontScale - 0.08);
+      applyFont();
     });
 
     const themeToggle = document.getElementById("themeToggle");
@@ -688,9 +891,8 @@
       document.body.setAttribute("data-theme", isLight ? "dark" : "light");
     });
 
-    // Jump to Verse Handler
-    function handleJump() {
-      const val = document.getElementById("jumpInput").value.trim();
+    function jumpToVerse() {
+      const val = document.getElementById("jumpField").value.trim();
       const parts = val.split(":");
       if (parts.length === 2) {
         const s = parseInt(parts[0]);
@@ -700,12 +902,12 @@
           return;
         }
       }
-      alert("Please enter verse in Surah:Ayah format, e.g. 2:255 or 18:10");
+      alert("Please enter verse in Surah:Ayah format (e.g. 2:255 or 18:10)");
     }
 
-    document.getElementById("jumpBtn").addEventListener("click", handleJump);
-    document.getElementById("jumpInput").addEventListener("keypress", (e) => {
-      if (e.key === "Enter") handleJump();
+    document.getElementById("jumpTrigger").addEventListener("click", jumpToVerse);
+    document.getElementById("jumpField").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") jumpToVerse();
     });
 
     // Initial Load
