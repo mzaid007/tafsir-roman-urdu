@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Tafsir-Roman-Urdu (TRU) — Read & Review Tafsir Ibn Kathir</title>
-  <meta name="description" content="The world's first complete Roman Urdu transliteration of Tafsir Ibn Kathir across all 114 Surahs (6,236 Ayahs). Machine-verified via LLM, open for scholarly review.">
+  <title>Tafsir-Roman-Urdu (TRU) — Scholarly Review & Reader Platform</title>
+  <meta name="description" content="The world's first complete Roman Urdu transliteration of Tafsir Ibn Kathir across all 114 Surahs (6,236 Ayahs). Fast, mobile-friendly, side-by-side comparison for reviewers.">
   <meta name="theme-color" content="#0d1117">
   
   <!-- Preconnect & Fonts -->
@@ -27,7 +27,7 @@
       --green: #238636;
       --green-hover: #2ea043;
       --urdu-color: #7ee787;
-      --header-bg: rgba(22, 27, 34, 0.85);
+      --header-bg: rgba(22, 27, 34, 0.88);
       --font-scale: 1.05rem;
       --bottom-bar-height: 60px;
     }
@@ -46,7 +46,7 @@
       --green: #15803d;
       --green-hover: #166534;
       --urdu-color: #166534;
-      --header-bg: rgba(255, 255, 255, 0.9);
+      --header-bg: rgba(255, 255, 255, 0.92);
     }
 
     * {
@@ -65,7 +65,7 @@
       padding-bottom: 80px; /* Space for mobile bottom bar */
     }
 
-    /* Top Navigation Bar */
+    /* Top Navigation Header */
     header {
       background: var(--header-bg);
       backdrop-filter: blur(12px);
@@ -110,7 +110,7 @@
     .top-tools {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     /* Controls Bar */
@@ -149,7 +149,7 @@
       font-size: 0.88rem;
       outline: none;
       font-family: inherit;
-      min-height: 40px; /* Touch target */
+      min-height: 40px;
     }
 
     select {
@@ -188,7 +188,7 @@
       background: var(--green-hover);
     }
 
-    /* Segmented View Mode Toggle */
+    /* Segmented Controls */
     .segmented-control {
       display: inline-flex;
       background: var(--bg);
@@ -216,7 +216,7 @@
     /* Main Container */
     .main-wrapper {
       max-width: 1300px;
-      margin: 20px auto;
+      margin: 16px auto;
       padding: 0 16px;
     }
 
@@ -225,14 +225,14 @@
       background: var(--gold-bg);
       border: 1px solid var(--gold);
       border-radius: 10px;
-      padding: 16px 20px;
-      margin-bottom: 24px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      font-size: 0.92rem;
+      gap: 12px;
+      font-size: 0.90rem;
     }
 
     .disclaimer-card strong {
@@ -247,15 +247,15 @@
     /* Surah Header */
     .surah-banner {
       text-align: center;
-      padding: 24px 16px;
-      margin-bottom: 24px;
+      padding: 18px 16px;
+      margin-bottom: 20px;
       border-bottom: 1px solid var(--border);
     }
 
     .surah-banner h1 {
-      font-size: 2.1rem;
+      font-size: 2rem;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       font-weight: 700;
     }
 
@@ -271,13 +271,39 @@
       align-items: center;
     }
 
+    /* Pager Navigation Bar (Top and Bottom of Verses) */
+    .verse-pager {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      gap: 12px;
+    }
+
+    .pager-info {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .pager-hints {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: normal;
+    }
+
     /* Ayah Card */
     .ayah-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 24px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
       transition: border-color 0.15s, box-shadow 0.15s;
     }
@@ -308,7 +334,7 @@
 
     .card-tools {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       align-items: center;
     }
 
@@ -372,7 +398,7 @@
 
     .mobile-bottom-bar button {
       flex: 1;
-      max-width: 140px;
+      max-width: 130px;
       font-size: 0.85rem;
       font-weight: 600;
     }
@@ -401,7 +427,7 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 14px;
-      max-width: 550px;
+      max-width: 580px;
       width: 100%;
       padding: 24px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.4);
@@ -409,19 +435,26 @@
 
     .modal-content h3 {
       color: var(--accent);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       font-size: 1.25rem;
     }
 
-    .modal-content p {
+    .modal-snippet {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 0.84rem;
       color: var(--text-muted);
-      font-size: 0.88rem;
-      margin-bottom: 14px;
+      max-height: 80px;
+      overflow-y: auto;
+      margin: 10px 0 14px 0;
+      font-style: italic;
     }
 
     .modal-content textarea {
       width: 100%;
-      height: 140px;
+      height: 130px;
       background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
@@ -473,7 +506,7 @@
 
     @media (min-width: 901px) {
       .mobile-bottom-bar {
-        display: none; /* Hide bottom thumb bar on desktop */
+        display: none;
       }
       body {
         padding-bottom: 30px;
@@ -524,15 +557,19 @@
       </div>
 
       <div class="control-group">
-        <div class="segmented-control" role="group" aria-label="View Mode">
+        <!-- Display Format: Single Verse vs Page vs Full -->
+        <div class="segmented-control" role="group" aria-label="Paging Mode">
+          <button id="pageModeSingle" class="active" title="Focused 1-verse view: Zero lag, fast reading">Single Ayah</button>
+          <button id="pageModeTen" title="10 verses per page">10 / Page</button>
+          <button id="pageModeAll" title="Continuous full chapter view">All</button>
+        </div>
+
+        <!-- Layout Mode: Side-by-side vs Roman vs Urdu -->
+        <div class="segmented-control" role="group" aria-label="Layout Mode">
           <button id="modeSide" class="active" title="Side-by-side comparison for reviewers">◫ Side-by-Side</button>
           <button id="modeRoman" title="Roman Urdu Only">Roman</button>
           <button id="modeUrdu" title="Urdu Nastaliq Only">اردو</button>
         </div>
-
-        <button class="btn-green" onclick="openReviewModal(currentSurah, 'General')">
-          📝 Review Note
-        </button>
       </div>
     </div>
   </section>
@@ -546,7 +583,7 @@
         <strong>⚠️ Scholarly Review Notice:</strong> This complete 114-Surah exegesis was transliterated from authentic Urdu <em>Tafsir Ibn Kathir</em> (Maulana Junagarhi) via LLM. It is <strong>machine-verified and currently awaiting formal scholarly review (*Alim / Mufti* audit)</strong>.
       </div>
       <div>
-        <a href="mailto:mzaid007@gmail.com?subject=[TRU%20Review]%20Scholarly%20Feedback" style="font-weight:600;">Contact Zaid (mzaid007@gmail.com) ➔</a>
+        <a href="mailto:mzaid007@gmail.com?subject=[TRU%20Review]%20Scholarly%20Feedback" style="font-weight:600;">Email Zaid (mzaid007@gmail.com) ➔</a>
       </div>
     </div>
 
@@ -560,9 +597,26 @@
       </div>
     </div>
 
+    <!-- Top Pager Bar for Single / Page Mode -->
+    <div class="verse-pager" id="topPager">
+      <button id="btnTopPrev">◀ Previous</button>
+      <div class="pager-info" id="topPagerText">
+        Ayah 1 of 7
+        <div class="pager-hints">Keyboard: ← / → Arrow Keys to flip</div>
+      </div>
+      <button id="btnTopNext">Next ▶</button>
+    </div>
+
     <!-- Commentary Rendering Target -->
     <div id="renderTarget">
       <div class="spinner">Loading exegesis dataset...</div>
+    </div>
+
+    <!-- Bottom Pager Bar for Single / Page Mode -->
+    <div class="verse-pager" id="bottomPager">
+      <button id="btnBottomPrev">◀ Previous</button>
+      <div class="pager-info" id="bottomPagerText">Ayah 1 of 7</div>
+      <button id="btnBottomNext">Next ▶</button>
     </div>
 
   </main>
@@ -574,12 +628,13 @@
     <button id="mbNext">Next ▶</button>
   </nav>
 
-  <!-- Review Modal Overlay -->
+  <!-- Review Modal Overlay (Always Verse-Specific) -->
   <div class="modal-backdrop" id="reviewModal" role="dialog" aria-modal="true">
     <div class="modal-content">
-      <h3 id="modalHeading">Suggest Correction / Scholarly Note</h3>
-      <p id="modalRefText">Submitting review feedback for Surah 1, Ayah 1</p>
-      <textarea id="modalText" placeholder="Please describe any correction, missing nuance, vowel spelling, or scholarly remarks..."></textarea>
+      <h3 id="modalHeading">Review Note: Surah 1, Ayah 1</h3>
+      <p id="modalRefText">Submitting scholarly review note for this specific verse.</p>
+      <div class="modal-snippet" id="modalSnippet">"Loading verse preview..."</div>
+      <textarea id="modalText" placeholder="Please describe any correction, missing nuance, vowel spelling, or scholarly remarks for this specific Ayah..."></textarea>
       <div class="modal-actions">
         <button onclick="closeReviewModal()">Cancel</button>
         <button class="btn-green" id="btnModalEmail">Send via Email</button>
@@ -590,7 +645,7 @@
 
   <footer>
     <strong>Tafsir-Roman-Urdu (TRU)</strong> • Open-Source Dataset • Translated by Maulana Muhammad Junagarhi (Tafsir Ibn Kathir)<br>
-    Maintained by Zaid (<a href="mailto:mzaid007@gmail.com" style="color:var(--accent);">mzaid007@gmail.com</a>) • Open-Access CC BY-SA 4.0
+    Maintained by Zaid (<a href="mailto:mzaid007@gmail.com" style="color:var(--accent);">mzaid007@gmail.com</a>) • Open-Access MIT License
   </footer>
 
   <script>
@@ -630,6 +685,9 @@
     let currentData = [];
     let urduData = [];
     let currentMode = "side"; // "side", "roman", "urdu"
+    let pageMode = "single";  // "single" (default, fast), "ten", "all"
+    let currentAyahIndex = 1; // 1-based index
+    let currentPageTen = 1;   // 1-based page for 10/page mode
     let fontScale = 1.05;
 
     let modalSurah = 1;
@@ -642,7 +700,12 @@
     const surahDetails = document.getElementById("surahDetails");
     const mbCounter = document.getElementById("mbCounter");
 
-    // Initialize Dropdowns
+    const topPager = document.getElementById("topPager");
+    const bottomPager = document.getElementById("bottomPager");
+    const topPagerText = document.getElementById("topPagerText");
+    const bottomPagerText = document.getElementById("bottomPagerText");
+
+    // Initialize Chapter Dropdown
     CHAPTERS.forEach((c, idx) => {
       const opt = document.createElement("option");
       opt.value = idx + 1;
@@ -650,9 +713,12 @@
       surahSelect.appendChild(opt);
     });
 
-    async function loadSurah(num, targetAyah = null) {
+    async function loadSurah(num, targetAyah = 1) {
       currentSurah = num;
       surahSelect.value = num;
+      currentAyahIndex = targetAyah || 1;
+      currentPageTen = Math.ceil(currentAyahIndex / 10);
+
       renderTarget.innerHTML = `<div class="spinner">Loading Surah ${num} exegesis...</div>`;
 
       const surahName = CHAPTERS[num - 1].split(". ")[1];
@@ -677,62 +743,74 @@
         }
 
         surahDetails.textContent = `Surah ${num} • ${currentData.length} Ayahs • Tafsir Ibn Kathir (Maulana Junagarhi)`;
-        populateAyahs(currentData.length);
+        populateAyahDropdown(currentData.length);
+        ayahSelect.value = currentAyahIndex;
 
-        if (targetAyah) {
-          ayahSelect.value = targetAyah;
-        }
-
-        renderVerses();
-        updateMobileCounter();
-
-        if (targetAyah) {
-          setTimeout(() => {
-            const el = document.getElementById(`verse-${targetAyah}`);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 100);
-        }
+        renderView();
       } catch (err) {
         renderTarget.innerHTML = `
           <div class="disclaimer-card" style="border-color:#f85149; background:rgba(248,81,73,0.1);">
-            Error loading Surah ${num}: ${err.message}. Please check network access or CORS settings.
+            Error loading Surah ${num}: ${err.message}.
           </div>
         `;
       }
     }
 
-    function populateAyahs(count) {
-      ayahSelect.innerHTML = `<option value="all">View Entire Chapter (1–${count})</option>`;
+    function populateAyahDropdown(count) {
+      ayahSelect.innerHTML = "";
       for (let i = 1; i <= count; i++) {
         const opt = document.createElement("option");
         opt.value = i;
-        opt.textContent = `Ayah ${i}`;
+        opt.textContent = `Ayah ${i} of ${count}`;
         ayahSelect.appendChild(opt);
       }
     }
 
-    function updateMobileCounter() {
-      const sel = ayahSelect.value;
-      if (sel === "all") {
-        mbCounter.textContent = `Surah ${currentSurah} (All)`;
+    function renderView() {
+      if (!currentData || !currentData.length) return;
+
+      const total = currentData.length;
+      let itemsToRender = [];
+
+      if (pageMode === "single") {
+        topPager.style.display = "flex";
+        bottomPager.style.display = "flex";
+        currentAyahIndex = Math.max(1, Math.min(total, currentAyahIndex));
+        ayahSelect.value = currentAyahIndex;
+
+        const currentItem = currentData.find(x => x.ayah == currentAyahIndex) || currentData[0];
+        itemsToRender = [currentItem];
+
+        const pagerStr = `Ayah ${currentAyahIndex} of ${total}`;
+        topPagerText.innerHTML = `${pagerStr} <div class="pager-hints">Keyboard: ← / → Arrow Keys to flip</div>`;
+        bottomPagerText.textContent = pagerStr;
+        mbCounter.textContent = pagerStr;
+      } else if (pageMode === "ten") {
+        topPager.style.display = "flex";
+        bottomPager.style.display = "flex";
+        const totalPages = Math.ceil(total / 10);
+        currentPageTen = Math.max(1, Math.min(totalPages, currentPageTen));
+
+        const startIdx = (currentPageTen - 1) * 10;
+        const endIdx = Math.min(total, startIdx + 10);
+        itemsToRender = currentData.slice(startIdx, endIdx);
+
+        const pagerStr = `Ayahs ${startIdx + 1}–${endIdx} (Page ${currentPageTen} of ${totalPages})`;
+        topPagerText.innerHTML = `${pagerStr} <div class="pager-hints">Keyboard: ← / → Arrow Keys to flip pages</div>`;
+        bottomPagerText.textContent = pagerStr;
+        mbCounter.textContent = `Page ${currentPageTen} / ${totalPages}`;
       } else {
-        mbCounter.textContent = `Ayah ${sel} / ${currentData.length}`;
-      }
-    }
-
-    function renderVerses() {
-      const selected = ayahSelect.value;
-      const items = selected === "all" ? currentData : currentData.filter(x => x.ayah == selected);
-
-      if (!items.length) {
-        renderTarget.innerHTML = `<div class="spinner">No commentary available.</div>`;
-        return;
+        // "all" mode
+        topPager.style.display = "none";
+        bottomPager.style.display = "none";
+        itemsToRender = currentData;
+        mbCounter.textContent = `All ${total} Ayahs`;
       }
 
       const urduMap = {};
       urduData.forEach(x => { urduMap[x.ayah] = x.text; });
 
-      renderTarget.innerHTML = items.map(item => {
+      renderTarget.innerHTML = itemsToRender.map(item => {
         const urduText = urduMap[item.ayah] || "";
         const romanText = item.text || "<em>(Commentary grouped with adjacent Ayahs)</em>";
 
@@ -763,7 +841,9 @@
               <div class="card-tools">
                 <button class="btn-sm" onclick="copyVerse(${item.ayah})">📋 Copy</button>
                 <button class="btn-sm" onclick="shareVerse(${item.ayah})">↗ Share</button>
-                <button class="btn-sm btn-green" onclick="openReviewModal(${currentSurah}, ${item.ayah})">📝 Review</button>
+                <button class="btn-sm btn-green" onclick="openReviewModal(${currentSurah}, ${item.ayah})">
+                  📝 Review Ayah ${item.ayah}
+                </button>
               </div>
             </div>
             ${bodyContent}
@@ -778,23 +858,160 @@
       document.documentElement.style.setProperty('--font-scale', `${fontScale}rem`);
     }
 
-    function setMode(mode) {
+    // Pager Actions
+    function goPrev() {
+      if (pageMode === "single") {
+        if (currentAyahIndex > 1) {
+          currentAyahIndex--;
+          renderView();
+          window.scrollTo({ top: 180, behavior: 'smooth' });
+        } else if (currentSurah > 1) {
+          loadSurah(currentSurah - 1, 99999); // last verse of prev surah
+        }
+      } else if (pageMode === "ten") {
+        if (currentPageTen > 1) {
+          currentPageTen--;
+          renderView();
+          window.scrollTo({ top: 180, behavior: 'smooth' });
+        } else if (currentSurah > 1) {
+          loadSurah(currentSurah - 1);
+        }
+      }
+    }
+
+    function goNext() {
+      const total = currentData.length;
+      if (pageMode === "single") {
+        if (currentAyahIndex < total) {
+          currentAyahIndex++;
+          renderView();
+          window.scrollTo({ top: 180, behavior: 'smooth' });
+        } else if (currentSurah < 114) {
+          loadSurah(currentSurah + 1, 1);
+        }
+      } else if (pageMode === "ten") {
+        const totalPages = Math.ceil(total / 10);
+        if (currentPageTen < totalPages) {
+          currentPageTen++;
+          renderView();
+          window.scrollTo({ top: 180, behavior: 'smooth' });
+        } else if (currentSurah < 114) {
+          loadSurah(currentSurah + 1);
+        }
+      }
+    }
+
+    // Attach Pager Buttons
+    document.getElementById("btnTopPrev").addEventListener("click", goPrev);
+    document.getElementById("btnTopNext").addEventListener("click", goNext);
+    document.getElementById("btnBottomPrev").addEventListener("click", goPrev);
+    document.getElementById("btnBottomNext").addEventListener("click", goNext);
+    document.getElementById("mbPrev").addEventListener("click", goPrev);
+    document.getElementById("mbNext").addEventListener("click", goNext);
+
+    // Keyboard Shortcuts (Left/Right Arrow to flip)
+    window.addEventListener("keydown", (e) => {
+      if (["input", "textarea", "select"].includes(document.activeElement.tagName.toLowerCase())) {
+        return; // Don't flip while typing
+      }
+      if (e.key === "ArrowLeft") {
+        goPrev();
+      } else if (e.key === "ArrowRight") {
+        goNext();
+      }
+    });
+
+    // Touch Swipe Navigation for Mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    document.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+    document.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > 75) {
+        if (diff > 0) goPrev(); // Swiped right -> previous
+        else goNext();          // Swiped left -> next
+      }
+    }, false);
+
+    // Dropdown Events
+    surahSelect.addEventListener("change", (e) => loadSurah(parseInt(e.target.value), 1));
+    ayahSelect.addEventListener("change", (e) => {
+      currentAyahIndex = parseInt(e.target.value);
+      currentPageTen = Math.ceil(currentAyahIndex / 10);
+      renderView();
+    });
+
+    // Page Mode Segmented Buttons
+    function setPageMode(mode) {
+      pageMode = mode;
+      document.querySelectorAll(".segmented-control button").forEach(b => {
+        if (["pageModeSingle", "pageModeTen", "pageModeAll"].includes(b.id)) b.classList.remove("active");
+      });
+      if (mode === "single") document.getElementById("pageModeSingle").classList.add("active");
+      if (mode === "ten") document.getElementById("pageModeTen").classList.add("active");
+      if (mode === "all") {
+        if (currentData.length > 80) {
+          if (!confirm(`Surah ${currentSurah} has ${currentData.length} Ayahs. Rendering all simultaneously may cause slight lag on mobile devices. Proceed?`)) {
+            setPageMode("single");
+            return;
+          }
+        }
+        document.getElementById("pageModeAll").classList.add("active");
+      }
+      renderView();
+    }
+
+    document.getElementById("pageModeSingle").addEventListener("click", () => setPageMode("single"));
+    document.getElementById("pageModeTen").addEventListener("click", () => setPageMode("ten"));
+    document.getElementById("pageModeAll").addEventListener("click", () => setPageMode("all"));
+
+    // Layout Mode Segmented Buttons
+    function setLayoutMode(mode) {
       currentMode = mode;
-      document.querySelectorAll(".segmented-control button").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".segmented-control button").forEach(b => {
+        if (["modeSide", "modeRoman", "modeUrdu"].includes(b.id)) b.classList.remove("active");
+      });
       if (mode === "side") document.getElementById("modeSide").classList.add("active");
       if (mode === "roman") document.getElementById("modeRoman").classList.add("active");
       if (mode === "urdu") document.getElementById("modeUrdu").classList.add("active");
-      renderVerses();
+      renderView();
     }
 
-    // Modal Handling
+    document.getElementById("modeSide").addEventListener("click", () => setLayoutMode("side"));
+    document.getElementById("modeRoman").addEventListener("click", () => setLayoutMode("roman"));
+    document.getElementById("modeUrdu").addEventListener("click", () => setLayoutMode("urdu"));
+
+    // Font Controls
+    document.getElementById("fontInc").addEventListener("click", () => {
+      fontScale = Math.min(1.5, fontScale + 0.08);
+      applyFont();
+    });
+    document.getElementById("fontDec").addEventListener("click", () => {
+      fontScale = Math.max(0.85, fontScale - 0.08);
+      applyFont();
+    });
+
+    // Theme Toggle
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+      const isLight = document.body.getAttribute("data-theme") === "light";
+      document.body.setAttribute("data-theme", isLight ? "dark" : "light");
+    });
+
+    // Verse-Specific Review Modal
     window.openReviewModal = function(surah, ayah) {
       modalSurah = surah;
       modalAyah = ayah;
-      document.getElementById("modalHeading").textContent = ayah === 'General'
-        ? `General Review: Surah ${surah}`
-        : `Review Note: Surah ${surah}, Ayah ${ayah}`;
-      document.getElementById("modalRefText").textContent = `Scholarly audit feedback for Surah ${surah}, Ayah ${ayah}.`;
+
+      const verseItem = currentData.find(x => x.ayah == ayah);
+      const snippet = verseItem && verseItem.text ? verseItem.text.substring(0, 150) + "..." : "(No text)";
+
+      document.getElementById("modalHeading").textContent = `Review Note: Surah ${surah}, Ayah ${ayah}`;
+      document.getElementById("modalRefText").textContent = `Scholarly audit remarks specifically for Surah ${surah}, Ayah ${ayah}:`;
+      document.getElementById("modalSnippet").textContent = `"${snippet}"`;
       document.getElementById("modalText").value = "";
       document.getElementById("reviewModal").style.display = "flex";
     };
@@ -812,8 +1029,8 @@
 
     document.getElementById("btnModalGitHub").addEventListener("click", () => {
       const notes = document.getElementById("modalText").value;
-      const title = encodeURIComponent(`[Review] Surah ${modalSurah}:${modalAyah} Scholarly Audit`);
-      const body = encodeURIComponent(`### Surah ${modalSurah}, Ayah ${modalAyah} Review\n\n**Remarks**:\n${notes}`);
+      const title = encodeURIComponent(`[Review] Surah ${modalSurah}:${modalAyah} Scholarly Correction`);
+      const body = encodeURIComponent(`### Surah ${modalSurah}, Ayah ${modalAyah} Review\n\n**Notes**:\n${notes}`);
       window.open(`https://github.com/mzaid007/tafsir-roman-urdu/issues/new?title=${title}&body=${body}`, '_blank');
     });
 
@@ -840,57 +1057,7 @@
       }
     };
 
-    // Mobile Bottom Bar Navigation
-    document.getElementById("mbPrev").addEventListener("click", () => {
-      const sel = ayahSelect.value;
-      if (sel === "all" || sel == 1) {
-        if (currentSurah > 1) loadSurah(currentSurah - 1);
-      } else {
-        ayahSelect.value = parseInt(sel) - 1;
-        renderVerses();
-        updateMobileCounter();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
-
-    document.getElementById("mbNext").addEventListener("click", () => {
-      const sel = ayahSelect.value;
-      if (sel === "all" || sel == currentData.length) {
-        if (currentSurah < 114) loadSurah(currentSurah + 1);
-      } else {
-        ayahSelect.value = parseInt(sel) + 1;
-        renderVerses();
-        updateMobileCounter();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
-
-    // Event Listeners
-    surahSelect.addEventListener("change", (e) => loadSurah(parseInt(e.target.value)));
-    ayahSelect.addEventListener("change", () => {
-      renderVerses();
-      updateMobileCounter();
-    });
-
-    document.getElementById("modeSide").addEventListener("click", () => setMode("side"));
-    document.getElementById("modeRoman").addEventListener("click", () => setMode("roman"));
-    document.getElementById("modeUrdu").addEventListener("click", () => setMode("urdu"));
-
-    document.getElementById("fontInc").addEventListener("click", () => {
-      fontScale = Math.min(1.5, fontScale + 0.08);
-      applyFont();
-    });
-    document.getElementById("fontDec").addEventListener("click", () => {
-      fontScale = Math.max(0.85, fontScale - 0.08);
-      applyFont();
-    });
-
-    const themeToggle = document.getElementById("themeToggle");
-    themeToggle.addEventListener("click", () => {
-      const isLight = document.body.getAttribute("data-theme") === "light";
-      document.body.setAttribute("data-theme", isLight ? "dark" : "light");
-    });
-
+    // Quick Jump Box
     function jumpToVerse() {
       const val = document.getElementById("jumpField").value.trim();
       const parts = val.split(":");
@@ -910,8 +1077,8 @@
       if (e.key === "Enter") jumpToVerse();
     });
 
-    // Initial Load
-    loadSurah(1);
+    // Initial Load - Defaults to Surah 1 Ayah 1 in Focused Single-Ayah Mode
+    loadSurah(1, 1);
   </script>
 </body>
 </html>

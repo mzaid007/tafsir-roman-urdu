@@ -1,6 +1,14 @@
 # Tafsir-Roman-Urdu (TRU) 📖✨
 
-> **The World's First Complete, 100% Accurate, Standardized Roman Urdu Exegesis of the Holy Qur'an (Tafsir Ibn Kathir).**
+> **The World's First Complete, Standardized Roman Urdu Exegesis of the Holy Qur'an (Tafsir Ibn Kathir).**
+
+[![Live Web App](https://img.shields.io/badge/Live%20App-tafsir--roman--urdu.vercel.app-000000?logo=vercel&logoColor=white)](https://tafsir-roman-urdu.vercel.app/)
+[![GitHub Release](https://img.shields.io/github/v/release/mzaid007/tafsir-roman-urdu?color=orange&logo=github)](https://github.com/mzaid007/tafsir-roman-urdu/releases/tag/v1.0.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Surahs Completed](https://img.shields.io/badge/Surahs-114%2F114%20(100%25)-brightgreen)](https://tafsir-roman-urdu.vercel.app/)
+[![Ayahs Completed](https://img.shields.io/badge/Ayahs-6%2C236%2F6%2C236-brightgreen)](https://tafsir-roman-urdu.vercel.app/)
+[![QA Linter](https://img.shields.io/badge/QA%20Linter-100%25%20Passing-success)](https://github.com/mzaid007/tafsir-roman-urdu)
+[![Corpus Size](https://img.shields.io/badge/Corpus-32.3M%20chars-purple)](https://tafsir-roman-urdu.vercel.app/)
 
 > [!IMPORTANT]
 > ### ⚠️ Scholarly Review & AI Transliteration Disclaimer
@@ -164,4 +172,4 @@ python scripts/linter.py --all
 ## 📜 License & Attribution
 
 - **Urdu Translation Source**: Maulana Muhammad Junagarhi (Tafsir Ibn Kathir).
-- **Roman Urdu Dataset**: Open-access under [Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
+- **Roman Urdu Dataset & Web Application**: Open-source under the [MIT License](LICENSE). Copyright (c) 2026 Zaid and Tafsir-Roman-Urdu Contributors.
