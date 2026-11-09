@@ -70,12 +70,18 @@ console.log(tafsir[0].text);
 End users and scholarly reviewers can access the complete exegesis immediately using any of the following options:
 
 ### 1. Live Web Platform for Reviewers & Readers (Zero Setup)
-👉 **Live URL**: [**https://mzaid007.github.io/tafsir-roman-urdu/**](https://mzaid007.github.io/tafsir-roman-urdu/)
+👉 **Live URL**: [**https://tafsir-roman-urdu.vercel.app/**](https://tafsir-roman-urdu.vercel.app/) *(Mirror: [mzaid007.github.io/tafsir-roman-urdu](https://mzaid007.github.io/tafsir-roman-urdu/))*
 
 *(To run locally: open [`index.html`](file:///f:/Tafsir-Roman-Urdu/index.html) in your browser or run `python -m http.server 8000`)*
 
-- **◫ Side-by-Side Split View**: Read Roman Urdu transliteration alongside the authentic Urdu Nastaliq text (*Maulana Muhammad Junagarhi*) in real-time.
-- **📝 1-Click Review Notes**: Scholars can click **"Review Note"** on any verse to pre-fill an audit email to `mzaid007@gmail.com` or launch a GitHub issue.
+- **◫ Multi-Language Comparison Views**:
+  - **Roman Urdu + Urdu** (Side-by-Side): Compare transliteration against Maulana Junagarhi's Urdu text.
+  - **Roman Urdu + English** (Side-by-Side): Compare against authentic English Tafsir Ibn Kathir (Darussalam).
+  - **Urdu + English** (Side-by-Side): Classical cross-referencing.
+  - **Tri-View (Roman + Urdu + English)**: 3-column panoramic scholarly audit view.
+  - **Single Language Views**: Dedicated focused reading in Roman Urdu, Urdu Nastaliq, or English.
+- **⚡ Focused Single-Ayah Pager**: Instant loading (<15ms), zero lag, keyboard arrow shortcuts (`←` / `→`), and mobile touch swipe.
+- **📝 Verse-Specific Review Notes**: Click **"Review Ayah {n}"** to launch a pre-filled scholarly correction email to `mzaid007@gmail.com` or open a GitHub issue tagged with the exact verse.
 - **⚡ Quick Verse Jump**: Jump directly to any verse (e.g., `2:255` for Ayat al-Kursi or `18:10` for Al-Kahf).
 - **🌓 Theme & Font Controls**: Toggle Light/Dark mode and resize text dynamically for optimal reading comfort.
 
@@ -134,13 +140,16 @@ All transliterations strictly obey the formal [TRU Style Guide](style_guide/rule
 tafsir-roman-urdu/
 ├── data/
 │   ├── ur/               # Raw authentic Urdu source files (1..114.json)
-│   └── roman_urdu/       # Standardized Roman Urdu files (1..114.json)
+│   ├── en/               # Authentic English Tafsir Ibn Kathir files (1..114.json)
+│   └── roman_urdu/       # Standardized Roman Urdu transliteration files (1..114.json)
 ├── scripts/
 │   ├── transliterate.py  # LLM batch transliteration engine (Gemini API)
 │   └── linter.py         # Automated QA & honorifics integrity linter
 ├── style_guide/
 │   ├── rules.md          # Comprehensive orthography and linguistic rules
 │   └── glossary.json     # Standardized Islamic terminology dictionary
+├── index.html            # Static, zero-dependency web reader & comparison app
+├── LICENSE               # MIT Open-Source License
 ├── package.json          # npm distribution metadata
 └── README.md             # Project documentation and API guide
 ```

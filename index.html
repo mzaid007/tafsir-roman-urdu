@@ -352,6 +352,12 @@
       gap: 28px;
     }
 
+    .split-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+    }
+
     .column-title {
       font-size: 0.78rem;
       text-transform: uppercase;
@@ -362,6 +368,13 @@
     }
 
     .text-roman {
+      white-space: pre-wrap;
+      font-size: var(--font-scale);
+      line-height: 1.85;
+      color: var(--text);
+    }
+
+    .text-en {
       white-space: pre-wrap;
       font-size: var(--font-scale);
       line-height: 1.85;
@@ -475,13 +488,20 @@
     }
 
     /* Responsive Queries */
+    @media (max-width: 1050px) {
+      .split-grid-3 {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
     @media (max-width: 900px) {
       .split-grid {
         grid-template-columns: 1fr;
         gap: 20px;
       }
       
-      .text-urdu {
+      .text-urdu, .text-en {
         padding-top: 16px;
         border-top: 1px dashed var(--border);
       }
@@ -564,12 +584,16 @@
           <button id="pageModeAll" title="Continuous full chapter view">All</button>
         </div>
 
-        <!-- Layout Mode: Side-by-side vs Roman vs Urdu -->
-        <div class="segmented-control" role="group" aria-label="Layout Mode">
-          <button id="modeSide" class="active" title="Side-by-side comparison for reviewers">◫ Side-by-Side</button>
-          <button id="modeRoman" title="Roman Urdu Only">Roman</button>
-          <button id="modeUrdu" title="Urdu Nastaliq Only">اردو</button>
-        </div>
+        <!-- Layout & Comparison View Selector -->
+        <select id="viewSelect" aria-label="Comparison View" style="font-weight: 500;">
+          <option value="roman-ur" selected>◫ Roman + Urdu (Side-by-Side)</option>
+          <option value="roman-en">◫ Roman + English (Side-by-Side)</option>
+          <option value="ur-en">◫ Urdu + English (Side-by-Side)</option>
+          <option value="tri">◫ Tri-View (Roman + Urdu + EN)</option>
+          <option value="roman">📖 Roman Urdu Only</option>
+          <option value="urdu">📖 Urdu Only (اردو)</option>
+          <option value="en">📖 English Only</option>
+        </select>
       </div>
     </div>
   </section>
@@ -684,7 +708,8 @@
     let currentSurah = 1;
     let currentData = [];
     let urduData = [];
-    let currentMode = "side"; // "side", "roman", "urdu"
+    let englishData = [];
+    let currentMode = "roman-ur"; // "roman-ur", "roman-en", "ur-en", "tri", "roman", "urdu", "en"
     let pageMode = "single";  // "single" (default, fast), "ten", "all"
     let currentAyahIndex = 1; // 1-based index
     let currentPageTen = 1;   // 1-based page for 10/page mode
@@ -695,6 +720,7 @@
 
     const surahSelect = document.getElementById("surahSelect");
     const ayahSelect = document.getElementById("ayahSelect");
+    const viewSelect = document.getElementById("viewSelect");
     const renderTarget = document.getElementById("renderTarget");
     const surahHeading = document.getElementById("surahHeading");
     const surahDetails = document.getElementById("surahDetails");
@@ -728,21 +754,25 @@
       const cdnRu = `https://cdn.jsdelivr.net/gh/mzaid007/tafsir-roman-urdu@main/data/roman_urdu/${num}.json`;
       const localUr = `data/ur/${num}.json`;
       const cdnUr = `https://cdn.jsdelivr.net/gh/mzaid007/tafsir-roman-urdu@main/data/ur/${num}.json`;
+      const localEn = `data/en/${num}.json`;
+      const cdnEn = `https://cdn.jsdelivr.net/gh/mzaid007/tafsir-roman-urdu@main/data/en/${num}.json`;
 
       try {
-        let res = await fetch(localRu);
-        if (!res.ok) res = await fetch(cdnRu);
-        currentData = await res.json();
+        const [ruRes, urRes, enRes] = await Promise.allSettled([
+          fetch(localRu).then(r => r.ok ? r.json() : fetch(cdnRu).then(r => r.json())),
+          fetch(localUr).then(r => r.ok ? r.json() : fetch(cdnUr).then(r => r.json())),
+          fetch(localEn).then(r => r.ok ? r.json() : fetch(cdnEn).then(r => r.json()))
+        ]);
 
-        try {
-          let uRes = await fetch(localUr);
-          if (!uRes.ok) uRes = await fetch(cdnUr);
-          urduData = await uRes.json();
-        } catch {
-          urduData = [];
+        currentData = ruRes.status === 'fulfilled' ? ruRes.value : [];
+        urduData = urRes.status === 'fulfilled' ? urRes.value : [];
+        englishData = enRes.status === 'fulfilled' ? enRes.value : [];
+
+        if (!currentData || !currentData.length) {
+          throw new Error("Unable to load Roman Urdu exegesis file.");
         }
 
-        surahDetails.textContent = `Surah ${num} • ${currentData.length} Ayahs • Tafsir Ibn Kathir (Maulana Junagarhi)`;
+        surahDetails.textContent = `Surah ${num} • ${currentData.length} Ayahs • Tafsir Ibn Kathir (Roman Urdu • Urdu • English)`;
         populateAyahDropdown(currentData.length);
         ayahSelect.value = currentAyahIndex;
 
@@ -809,13 +839,16 @@
 
       const urduMap = {};
       urduData.forEach(x => { urduMap[x.ayah] = x.text; });
+      const enMap = {};
+      englishData.forEach(x => { enMap[x.ayah] = x.text; });
 
       renderTarget.innerHTML = itemsToRender.map(item => {
         const urduText = urduMap[item.ayah] || "";
+        const enText = enMap[item.ayah] || "";
         const romanText = item.text || "<em>(Commentary grouped with adjacent Ayahs)</em>";
 
         let bodyContent = "";
-        if (currentMode === "side") {
+        if (currentMode === "roman-ur") {
           bodyContent = `
             <div class="split-grid">
               <div>
@@ -828,10 +861,70 @@
               </div>
             </div>
           `;
+        } else if (currentMode === "roman-en") {
+          bodyContent = `
+            <div class="split-grid">
+              <div>
+                <div class="column-title">Roman Urdu Exegesis</div>
+                <div class="text-roman">${romanText}</div>
+              </div>
+              <div>
+                <div class="column-title">English Tafsir (Darussalam)</div>
+                <div class="text-en">${enText || '—'}</div>
+              </div>
+            </div>
+          `;
+        } else if (currentMode === "ur-en") {
+          bodyContent = `
+            <div class="split-grid">
+              <div>
+                <div class="column-title">English Tafsir (Darussalam)</div>
+                <div class="text-en">${enText || '—'}</div>
+              </div>
+              <div>
+                <div class="column-title" style="text-align:right;">Urdu Source (مولانا جوناگڑھی)</div>
+                <div class="text-urdu">${urduText || '—'}</div>
+              </div>
+            </div>
+          `;
+        } else if (currentMode === "tri") {
+          bodyContent = `
+            <div class="split-grid-3">
+              <div>
+                <div class="column-title">Roman Urdu Exegesis</div>
+                <div class="text-roman">${romanText}</div>
+              </div>
+              <div>
+                <div class="column-title">English Tafsir</div>
+                <div class="text-en">${enText || '—'}</div>
+              </div>
+              <div>
+                <div class="column-title" style="text-align:right;">Urdu Source (مولانا جوناگڑھی)</div>
+                <div class="text-urdu">${urduText || '—'}</div>
+              </div>
+            </div>
+          `;
         } else if (currentMode === "roman") {
-          bodyContent = `<div class="text-roman">${romanText}</div>`;
+          bodyContent = `
+            <div>
+              <div class="column-title">Roman Urdu Exegesis</div>
+              <div class="text-roman">${romanText}</div>
+            </div>
+          `;
         } else if (currentMode === "urdu") {
-          bodyContent = `<div class="text-urdu">${urduText || '—'}</div>`;
+          bodyContent = `
+            <div>
+              <div class="column-title" style="text-align:right;">Urdu Source (مولانا جوناگڑھی)</div>
+              <div class="text-urdu">${urduText || '—'}</div>
+            </div>
+          `;
+        } else if (currentMode === "en") {
+          bodyContent = `
+            <div>
+              <div class="column-title">English Tafsir (Darussalam)</div>
+              <div class="text-en">${enText || '—'}</div>
+            </div>
+          `;
         }
 
         return `
@@ -968,21 +1061,11 @@
     document.getElementById("pageModeTen").addEventListener("click", () => setPageMode("ten"));
     document.getElementById("pageModeAll").addEventListener("click", () => setPageMode("all"));
 
-    // Layout Mode Segmented Buttons
-    function setLayoutMode(mode) {
-      currentMode = mode;
-      document.querySelectorAll(".segmented-control button").forEach(b => {
-        if (["modeSide", "modeRoman", "modeUrdu"].includes(b.id)) b.classList.remove("active");
-      });
-      if (mode === "side") document.getElementById("modeSide").classList.add("active");
-      if (mode === "roman") document.getElementById("modeRoman").classList.add("active");
-      if (mode === "urdu") document.getElementById("modeUrdu").classList.add("active");
+    // View Selection Event
+    viewSelect.addEventListener("change", (e) => {
+      currentMode = e.target.value;
       renderView();
-    }
-
-    document.getElementById("modeSide").addEventListener("click", () => setLayoutMode("side"));
-    document.getElementById("modeRoman").addEventListener("click", () => setLayoutMode("roman"));
-    document.getElementById("modeUrdu").addEventListener("click", () => setLayoutMode("urdu"));
+    });
 
     // Font Controls
     document.getElementById("fontInc").addEventListener("click", () => {
