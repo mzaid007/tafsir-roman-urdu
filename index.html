@@ -30,6 +30,7 @@
       --header-bg: rgba(22, 27, 34, 0.88);
       --font-scale: 1.05rem;
       --bottom-bar-height: 60px;
+      --header-height: 61px;
     }
 
     [data-theme="light"] {
@@ -56,13 +57,17 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html, body {
+      overflow-x: clip;
+    }
+
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.8;
       transition: background 0.2s, color 0.2s;
-      padding-bottom: 80px; /* Space for mobile bottom bar */
+      padding-bottom: calc(var(--bottom-bar-height) + env(safe-area-inset-bottom, 0px) + 20px); /* Space for mobile bottom bar */
     }
 
     /* Top Navigation Header */
@@ -83,7 +88,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
     }
 
     .brand {
@@ -94,7 +99,14 @@
       font-size: 1.1rem;
       color: var(--accent);
       text-decoration: none;
-      flex-shrink: 0;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .brand-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .brand-badge {
@@ -105,12 +117,15 @@
       border-radius: 12px;
       font-weight: 600;
       letter-spacing: 0.3px;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .top-tools {
       display: flex;
       align-items: center;
       gap: 6px;
+      flex-shrink: 0;
     }
 
     /* Controls Bar */
@@ -119,7 +134,7 @@
       border-bottom: 1px solid var(--border);
       padding: 10px 16px;
       position: sticky;
-      top: 57px;
+      top: var(--header-height);
       z-index: 90;
     }
 
@@ -138,6 +153,7 @@
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
+      min-width: 0;
     }
 
     select, button, input {
@@ -269,6 +285,7 @@
       display: inline-flex;
       gap: 8px;
       align-items: center;
+      max-width: 100%;
     }
 
     /* Pager Navigation Bar (Top and Bottom of Verses) */
@@ -282,6 +299,12 @@
       padding: 10px 16px;
       margin-bottom: 20px;
       gap: 12px;
+      scroll-margin-top: calc(var(--header-height) + 74px);
+    }
+
+    .verse-pager button {
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .pager-info {
@@ -289,6 +312,7 @@
       font-size: 0.95rem;
       color: var(--text);
       text-align: center;
+      min-width: 0;
     }
 
     .pager-hints {
@@ -336,6 +360,7 @@
       display: flex;
       gap: 8px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .btn-sm {
@@ -358,6 +383,104 @@
       gap: 24px;
     }
 
+    .split-pane {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .pane-header-rtl {
+      flex-direction: row-reverse;
+    }
+
+    .pane-header .column-title {
+      margin-bottom: 0;
+    }
+
+    .pane-expand-btn {
+      display: none;
+      min-height: 26px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      border-radius: 6px;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      flex-shrink: 0;
+    }
+
+    .pane-expand-btn[aria-expanded="true"] {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .mobile-compare-controls {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .mobile-compare-controls .segmented-control {
+      flex: 1 1 auto;
+      display: flex;
+    }
+
+    .mobile-compare-controls .segmented-control button {
+      flex: 1 1 0;
+      padding: 4px 6px;
+      font-size: 0.78rem;
+      min-height: 30px;
+      white-space: nowrap;
+    }
+
+    .mobile-compare-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      flex-shrink: 0;
+    }
+
+    .mobile-lang-tabs {
+      display: none;
+      gap: 6px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .mobile-lang-tabs button {
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 34px;
+      padding: 6px 8px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mobile-lang-tabs button.active {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
     .column-title {
       font-size: 0.78rem;
       text-transform: uppercase;
@@ -369,6 +492,7 @@
 
     .text-roman {
       white-space: pre-wrap;
+      overflow-wrap: break-word;
       font-size: var(--font-scale);
       line-height: 1.85;
       color: var(--text);
@@ -376,6 +500,7 @@
 
     .text-en {
       white-space: pre-wrap;
+      overflow-wrap: break-word;
       font-size: var(--font-scale);
       line-height: 1.85;
       color: var(--text);
@@ -389,6 +514,7 @@
       line-height: 2.4;
       color: var(--urdu-color);
       white-space: pre-wrap;
+      overflow-wrap: break-word;
     }
 
     /* Mobile Bottom Navigation Bar */
@@ -397,7 +523,8 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: var(--bottom-bar-height);
+      height: calc(var(--bottom-bar-height) + env(safe-area-inset-bottom, 0px));
+      padding: 0 12px env(safe-area-inset-bottom, 0px);
       background: var(--header-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -405,7 +532,7 @@
       display: flex;
       align-items: center;
       justify-content: space-around;
-      padding: 0 16px;
+      gap: 8px;
       z-index: 100;
     }
 
@@ -414,14 +541,16 @@
       max-width: 130px;
       font-size: 0.85rem;
       font-weight: 600;
+      white-space: nowrap;
     }
 
     .mobile-ayah-counter {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: var(--text);
       text-align: center;
       flex: 1;
+      min-width: 0;
     }
 
     /* Review Feedback Modal */
@@ -442,6 +571,8 @@
       border-radius: 14px;
       max-width: 580px;
       width: 100%;
+      max-height: 90dvh;
+      overflow-y: auto;
       padding: 24px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
@@ -488,39 +619,284 @@
     }
 
     /* Responsive Queries */
-    @media (max-width: 1050px) {
-      .split-grid-3 {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-    }
-
     @media (max-width: 900px) {
-      .split-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-      
-      .text-urdu, .text-en {
-        padding-top: 16px;
-        border-top: 1px dashed var(--border);
-      }
-
       .controls-bar {
-        top: 51px;
+        position: static;
+        padding: 10px 12px;
       }
 
-      select {
-        max-width: 100%;
+      .controls-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .control-group {
+        width: 100%;
+      }
+
+      #surahSelect {
+        flex: 1.35 1 0;
+        min-width: 0;
+        max-width: none;
+      }
+
+      #ayahSelect {
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: none;
+      }
+
+      .segmented-control {
+        flex: 1 1 100%;
+        display: flex;
+      }
+
+      .segmented-control button {
+        flex: 1;
+        padding: 6px 8px;
+        white-space: nowrap;
+      }
+
+      #viewSelect {
+        width: 100%;
+        max-width: none;
         flex: 1 1 100%;
       }
 
+      .verse-pager {
+        scroll-margin-top: calc(var(--header-height) + 10px);
+      }
+
+      .pager-hints {
+        display: none;
+      }
+
+      /* Triple view enters responsive comparison mode below 900px */
+      .ayah-card[data-compare="tri"] .mobile-compare-controls {
+        display: flex;
+      }
+
+      .ayah-card[data-compare="tri"] .split-grid-3 {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .ayah-card[data-compare="tri"] .split-pane {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--bg);
+        overflow: hidden;
+      }
+
+      .ayah-card[data-compare="tri"] .pane-header {
+        padding: 6px 10px;
+        margin-bottom: 0;
+        background: var(--card-hover);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .ayah-card[data-compare="tri"] .pane-header .column-title {
+        font-size: 0.72rem;
+        letter-spacing: 0.6px;
+      }
+
+      .ayah-card[data-compare="tri"] .pane-body {
+        padding: 10px 12px;
+      }
+
+      .ayah-card[data-compare="tri"][data-mobile-layout="split"] .pane-body {
+        max-height: clamp(120px, 18.5dvh, 200px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .ayah-card[data-compare="tri"][data-mobile-layout="split"] .pane-expand-btn {
+        display: inline-flex;
+      }
+
+      .ayah-card[data-compare="tri"][data-mobile-layout="split"] .split-pane.is-expanded .pane-body {
+        max-height: none;
+      }
+
+      .ayah-card[data-compare="tri"][data-mobile-layout="tabs"] .mobile-lang-tabs {
+        display: flex;
+      }
+
+      .ayah-card[data-compare="tri"][data-mobile-layout="tabs"] .split-pane:not(.is-active-tab) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 679px) {
+      /* Dual view also enters responsive comparison mode on phones */
+      .ayah-card[data-compare="dual"] .mobile-compare-controls {
+        display: flex;
+      }
+
+      .ayah-card[data-compare="dual"] .split-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .ayah-card[data-compare="dual"] .split-pane {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--bg);
+        overflow: hidden;
+      }
+
+      .ayah-card[data-compare="dual"] .pane-header {
+        padding: 8px 12px;
+        margin-bottom: 0;
+        background: var(--card-hover);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .ayah-card[data-compare="dual"] .pane-header .column-title {
+        font-size: 0.72rem;
+        letter-spacing: 0.6px;
+      }
+
+      .ayah-card[data-compare="dual"] .pane-body {
+        padding: 12px 14px;
+      }
+
+      .ayah-card[data-compare="dual"][data-mobile-layout="split"] .pane-body {
+        max-height: clamp(190px, 34dvh, 330px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .ayah-card[data-compare="dual"][data-mobile-layout="split"] .pane-expand-btn {
+        display: inline-flex;
+      }
+
+      .ayah-card[data-compare="dual"][data-mobile-layout="split"] .split-pane.is-expanded .pane-body {
+        max-height: none;
+      }
+
+      .ayah-card[data-compare="dual"][data-mobile-layout="tabs"] .mobile-lang-tabs {
+        display: flex;
+      }
+
+      .ayah-card[data-compare="dual"][data-mobile-layout="tabs"] .split-pane:not(.is-active-tab) {
+        display: none;
+      }
+
       .surah-banner h1 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
       }
 
       .ayah-card {
-        padding: 16px;
+        padding: 14px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 8px 12px;
+      }
+
+      .brand {
+        font-size: 0.96rem;
+        gap: 6px;
+      }
+
+      .brand-badge {
+        display: none;
+      }
+
+      .top-tools {
+        gap: 4px;
+      }
+
+      .top-tools button {
+        min-height: 34px;
+        padding: 4px 8px;
+        font-size: 0.8rem;
+      }
+
+      select, button, input {
+        min-height: 36px;
+        padding: 6px 10px;
+        font-size: 0.84rem;
+      }
+
+      .main-wrapper {
+        margin: 12px auto;
+        padding: 0 10px;
+      }
+
+      .disclaimer-card {
+        padding: 12px 14px;
+        font-size: 0.82rem;
+        line-height: 1.55;
+        margin-bottom: 14px;
+      }
+
+      .surah-banner {
+        padding: 12px 6px;
+        margin-bottom: 14px;
+      }
+
+      .surah-banner .sub {
+        font-size: 0.84rem;
+      }
+
+      .quick-jump-box {
+        display: flex;
+        width: 100%;
+        max-width: 340px;
+        margin: 12px auto 0;
+      }
+
+      #jumpField {
+        flex: 1;
+        min-width: 0;
+      }
+
+      #jumpTrigger {
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+
+      .verse-pager {
+        padding: 8px 10px;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .verse-pager button {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+
+      .pager-info {
+        font-size: 0.85rem;
+      }
+
+      .ayah-card {
+        padding: 12px;
+        margin-bottom: 14px;
+      }
+
+      .card-header {
+        padding-bottom: 10px;
+        margin-bottom: 12px;
+        gap: 8px;
+      }
+
+      .text-urdu {
+        line-height: 2.15;
+      }
+
+      .modal-content {
+        padding: 18px;
       }
     }
 
@@ -556,7 +932,7 @@
   <header>
     <div class="nav-container">
       <a href="#" class="brand">
-        <span>📖</span> Tafsir Roman Urdu
+        <span>📖</span> <span class="brand-title">Tafsir Roman Urdu</span>
         <span class="brand-badge">All 114 Surahs</span>
       </a>
 
@@ -711,9 +1087,36 @@
     let englishData = [];
     let currentMode = "roman-ur"; // "roman-ur", "roman-en", "ur-en", "tri", "roman", "urdu", "en"
     let pageMode = "single";  // "single" (default, fast), "ten", "all"
+    let mobileCompareLayout = "split"; // "split" (all panes visible), "tabs", "stack"
+    let activeMobileTab = "roman";
     let currentAyahIndex = 1; // 1-based index
     let currentPageTen = 1;   // 1-based page for 10/page mode
     let fontScale = 1.05;
+
+    const VIEW_CONFIG = {
+      "roman-ur": { compare: "dual", gridClass: "split-grid", panes: ["roman", "urdu"] },
+      "roman-en": { compare: "dual", gridClass: "split-grid", panes: ["roman", "en"] },
+      "ur-en": { compare: "dual", gridClass: "split-grid", panes: ["en", "urdu"] },
+      "tri": { compare: "tri", gridClass: "split-grid-3", panes: ["roman", "en", "urdu"] },
+      "roman": { compare: "single", gridClass: "", panes: ["roman"] },
+      "urdu": { compare: "single", gridClass: "", panes: ["urdu"] },
+      "en": { compare: "single", gridClass: "", panes: ["en"] }
+    };
+
+    const PANE_META = {
+      roman: { label: "Roman Urdu Exegesis", shortLabel: "Roman Urdu", textClass: "text-roman", rtl: false },
+      en: { label: "English Tafsir (Darussalam)", shortLabel: "English", textClass: "text-en", rtl: false },
+      urdu: { label: "Urdu Source (مولانا جوناگڑھی)", shortLabel: "Urdu (اردو)", textClass: "text-urdu", rtl: true }
+    };
+
+    function syncHeaderHeight() {
+      const headerEl = document.querySelector("header");
+      if (headerEl) {
+        document.documentElement.style.setProperty("--header-height", `${headerEl.offsetHeight}px`);
+      }
+    }
+    window.addEventListener("resize", syncHeaderHeight);
+    syncHeaderHeight();
 
     let modalSurah = 1;
     let modalAyah = 1;
@@ -842,93 +1245,69 @@
       const enMap = {};
       englishData.forEach(x => { enMap[x.ayah] = x.text; });
 
-      renderTarget.innerHTML = itemsToRender.map(item => {
-        const urduText = urduMap[item.ayah] || "";
-        const enText = enMap[item.ayah] || "";
-        const romanText = item.text || "<em>(Commentary grouped with adjacent Ayahs)</em>";
+      const viewConfig = VIEW_CONFIG[currentMode] || VIEW_CONFIG["roman-ur"];
+      if (!viewConfig.panes.includes(activeMobileTab)) {
+        activeMobileTab = viewConfig.panes[0];
+      }
 
-        let bodyContent = "";
-        if (currentMode === "roman-ur") {
-          bodyContent = `
-            <div class="split-grid">
-              <div>
-                <div class="column-title">Roman Urdu Exegesis</div>
-                <div class="text-roman">${romanText}</div>
-              </div>
-              <div>
-                <div class="column-title" style="text-align:right;">Urdu Source (مولانا جوناگڑھی)</div>
-                <div class="text-urdu">${urduText || '—'}</div>
+      function buildPaneHtml(langKey, texts) {
+        const meta = PANE_META[langKey];
+        const isActiveTab = langKey === activeMobileTab;
+        const headerClass = meta.rtl ? "pane-header pane-header-rtl" : "pane-header";
+        const titleStyle = meta.rtl ? ' style="text-align:right;"' : "";
+        const expandBtn = viewConfig.compare !== "single"
+          ? `<button type="button" class="pane-expand-btn" aria-expanded="false" title="Expand or collapse pane">⤢ Full</button>`
+          : "";
+
+        return `
+          <div class="split-pane${isActiveTab ? " is-active-tab" : ""}" data-lang="${langKey}">
+            <div class="${headerClass}">
+              <span class="column-title"${titleStyle}>${meta.label}</span>
+              ${expandBtn}
+            </div>
+            <div class="pane-body">
+              <div class="${meta.textClass}">${texts[langKey]}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      renderTarget.innerHTML = itemsToRender.map(item => {
+        const texts = {
+          roman: item.text || "<em>(Commentary grouped with adjacent Ayahs)</em>",
+          urdu: urduMap[item.ayah] || "—",
+          en: enMap[item.ayah] || "—"
+        };
+
+        const panesHtml = viewConfig.panes.map(lang => buildPaneHtml(lang, texts)).join("");
+        const bodyContent = viewConfig.gridClass
+          ? `<div class="${viewConfig.gridClass}">${panesHtml}</div>`
+          : panesHtml;
+
+        let mobileCompareHtml = "";
+        if (viewConfig.compare !== "single") {
+          const tabsHtml = viewConfig.panes.map(lang => {
+            const activeCls = lang === activeMobileTab ? " active" : "";
+            return `<button type="button" class="${activeCls}" data-tab="${lang}">${PANE_META[lang].shortLabel}</button>`;
+          }).join("");
+
+          mobileCompareHtml = `
+            <div class="mobile-compare-controls">
+              <span class="mobile-compare-label">Layout</span>
+              <div class="segmented-control" role="group" aria-label="Mobile comparison layout">
+                <button type="button" class="${mobileCompareLayout === "split" ? "active" : ""}" data-layout="split">◫ Split</button>
+                <button type="button" class="${mobileCompareLayout === "tabs" ? "active" : ""}" data-layout="tabs">▤ Tabs</button>
+                <button type="button" class="${mobileCompareLayout === "stack" ? "active" : ""}" data-layout="stack">⬇ Stack</button>
               </div>
             </div>
-          `;
-        } else if (currentMode === "roman-en") {
-          bodyContent = `
-            <div class="split-grid">
-              <div>
-                <div class="column-title">Roman Urdu Exegesis</div>
-                <div class="text-roman">${romanText}</div>
-              </div>
-              <div>
-                <div class="column-title">English Tafsir (Darussalam)</div>
-                <div class="text-en">${enText || '—'}</div>
-              </div>
-            </div>
-          `;
-        } else if (currentMode === "ur-en") {
-          bodyContent = `
-            <div class="split-grid">
-              <div>
-                <div class="column-title">English Tafsir (Darussalam)</div>
-                <div class="text-en">${enText || '—'}</div>
-              </div>
-              <div>
-                <div class="column-title" style="text-align:right;">Urdu Source (مولانا جوناگڑھی)</div>
-                <div class="text-urdu">${urduText || '—'}</div>
-              </div>
-            </div>
-          `;
-        } else if (currentMode === "tri") {
-          bodyContent = `
-            <div class="split-grid-3">
-              <div>
-                <div class="column-title">Roman Urdu Exegesis</div>
-                <div class="text-roman">${romanText}</div>
-              </div>
-              <div>
-                <div class="column-title">English Tafsir</div>
-                <div class="text-en">${enText || '—'}</div>
-              </div>
-              <div>
-                <div class="column-title" style="text-align:right;">Urdu Source (مولانا جوناگڑھی)</div>
-                <div class="text-urdu">${urduText || '—'}</div>
-              </div>
-            </div>
-          `;
-        } else if (currentMode === "roman") {
-          bodyContent = `
-            <div>
-              <div class="column-title">Roman Urdu Exegesis</div>
-              <div class="text-roman">${romanText}</div>
-            </div>
-          `;
-        } else if (currentMode === "urdu") {
-          bodyContent = `
-            <div>
-              <div class="column-title" style="text-align:right;">Urdu Source (مولانا جوناگڑھی)</div>
-              <div class="text-urdu">${urduText || '—'}</div>
-            </div>
-          `;
-        } else if (currentMode === "en") {
-          bodyContent = `
-            <div>
-              <div class="column-title">English Tafsir (Darussalam)</div>
-              <div class="text-en">${enText || '—'}</div>
+            <div class="mobile-lang-tabs" role="tablist" aria-label="Language tabs">
+              ${tabsHtml}
             </div>
           `;
         }
 
         return `
-          <article class="ayah-card" id="verse-${item.ayah}">
+          <article class="ayah-card" id="verse-${item.ayah}" data-compare="${viewConfig.compare}" data-mobile-layout="${mobileCompareLayout}">
             <div class="card-header">
               <span class="ayah-tag">Surah ${currentSurah}:${item.ayah}</span>
               <div class="card-tools">
@@ -939,6 +1318,7 @@
                 </button>
               </div>
             </div>
+            ${mobileCompareHtml}
             ${bodyContent}
           </article>
         `;
@@ -947,8 +1327,53 @@
       applyFont();
     }
 
+    // Event delegation for mobile comparison controls, tabs, and pane expand
+    renderTarget.addEventListener("click", (e) => {
+      const layoutBtn = e.target.closest(".mobile-compare-controls button[data-layout]");
+      if (layoutBtn) {
+        mobileCompareLayout = layoutBtn.dataset.layout;
+        renderTarget.querySelectorAll(".ayah-card").forEach(card => {
+          card.setAttribute("data-mobile-layout", mobileCompareLayout);
+          card.querySelectorAll(".mobile-compare-controls button[data-layout]").forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.layout === mobileCompareLayout);
+          });
+        });
+        return;
+      }
+
+      const tabBtn = e.target.closest(".mobile-lang-tabs button[data-tab]");
+      if (tabBtn) {
+        activeMobileTab = tabBtn.dataset.tab;
+        renderTarget.querySelectorAll(".ayah-card").forEach(card => {
+          card.querySelectorAll(".mobile-lang-tabs button[data-tab]").forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.tab === activeMobileTab);
+          });
+          card.querySelectorAll(".split-pane").forEach(pane => {
+            pane.classList.toggle("is-active-tab", pane.dataset.lang === activeMobileTab);
+          });
+        });
+        return;
+      }
+
+      const expandBtn = e.target.closest(".pane-expand-btn");
+      if (expandBtn) {
+        const pane = expandBtn.closest(".split-pane");
+        if (pane) {
+          const expanded = pane.classList.toggle("is-expanded");
+          expandBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
+          expandBtn.textContent = expanded ? "⤡ Compact" : "⤢ Full";
+        }
+      }
+    });
+
     function applyFont() {
       document.documentElement.style.setProperty('--font-scale', `${fontScale}rem`);
+    }
+
+    function scrollToReadingStart() {
+      if (topPager && topPager.style.display !== "none") {
+        topPager.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
     // Pager Actions
@@ -957,7 +1382,7 @@
         if (currentAyahIndex > 1) {
           currentAyahIndex--;
           renderView();
-          window.scrollTo({ top: 180, behavior: 'smooth' });
+          scrollToReadingStart();
         } else if (currentSurah > 1) {
           loadSurah(currentSurah - 1, 99999); // last verse of prev surah
         }
@@ -965,7 +1390,7 @@
         if (currentPageTen > 1) {
           currentPageTen--;
           renderView();
-          window.scrollTo({ top: 180, behavior: 'smooth' });
+          scrollToReadingStart();
         } else if (currentSurah > 1) {
           loadSurah(currentSurah - 1);
         }
@@ -978,7 +1403,7 @@
         if (currentAyahIndex < total) {
           currentAyahIndex++;
           renderView();
-          window.scrollTo({ top: 180, behavior: 'smooth' });
+          scrollToReadingStart();
         } else if (currentSurah < 114) {
           loadSurah(currentSurah + 1, 1);
         }
@@ -987,7 +1412,7 @@
         if (currentPageTen < totalPages) {
           currentPageTen++;
           renderView();
-          window.scrollTo({ top: 180, behavior: 'smooth' });
+          scrollToReadingStart();
         } else if (currentSurah < 114) {
           loadSurah(currentSurah + 1);
         }
@@ -1014,20 +1439,34 @@
       }
     });
 
-    // Touch Swipe Navigation for Mobile
+    // Touch Swipe Navigation for Mobile (only clear horizontal swipes, never diagonal scroll)
     let touchStartX = 0;
-    let touchEndX = 0;
+    let touchStartY = 0;
+    let touchIgnore = false;
     document.addEventListener("touchstart", (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, false);
-    document.addEventListener("touchend", (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      const diff = touchEndX - touchStartX;
-      if (Math.abs(diff) > 75) {
-        if (diff > 0) goPrev(); // Swiped right -> previous
-        else goNext();          // Swiped left -> next
+      if (e.touches.length !== 1) {
+        touchIgnore = true;
+        return;
       }
-    }, false);
+      const target = e.target;
+      touchIgnore = Boolean(
+        target.closest("#reviewModal, input, select, textarea, button, a")
+      );
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    document.addEventListener("touchend", (e) => {
+      if (touchIgnore || e.changedTouches.length !== 1) return;
+      const sel = window.getSelection ? window.getSelection().toString() : "";
+      if (sel) return;
+
+      const diffX = e.changedTouches[0].screenX - touchStartX;
+      const diffY = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(diffX) > 90 && Math.abs(diffX) > Math.abs(diffY) * 2) {
+        if (diffX > 0) goPrev(); // Swiped right -> previous
+        else goNext();           // Swiped left -> next
+      }
+    }, { passive: true });
 
     // Dropdown Events
     surahSelect.addEventListener("change", (e) => loadSurah(parseInt(e.target.value), 1));
@@ -1040,8 +1479,8 @@
     // Page Mode Segmented Buttons
     function setPageMode(mode) {
       pageMode = mode;
-      document.querySelectorAll(".segmented-control button").forEach(b => {
-        if (["pageModeSingle", "pageModeTen", "pageModeAll"].includes(b.id)) b.classList.remove("active");
+      ["pageModeSingle", "pageModeTen", "pageModeAll"].forEach(id => {
+        document.getElementById(id).classList.remove("active");
       });
       if (mode === "single") document.getElementById("pageModeSingle").classList.add("active");
       if (mode === "ten") document.getElementById("pageModeTen").classList.add("active");
